@@ -1,5 +1,6 @@
 package com.oliwer.plantswap.models;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,10 +22,10 @@ public class User {
     private String profilePicture;
 
     @DBRef
-    private List<String> plants;
+    private List<ObjectId> plants; // kanske funkar ?
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private LocalDateTime createdAt; // Fel datum typ ?
+    private LocalDateTime updatedAt; // Fel datum typ ?
 
     public User() {
     }
@@ -41,6 +42,8 @@ public class User {
 
 
     //------------------------- Getters & Setters ------------------------------------------------------------------------
+
+
     public String getId() {
         return id;
     }
@@ -48,6 +51,7 @@ public class User {
     public void setId(String id) {
         this.id = id;
     }
+
 
     public String getUsername() {
         return username;
@@ -97,11 +101,11 @@ public class User {
         this.profilePicture = profilePicture;
     }
 
-    public List<String> getPlants() {
+    public List<ObjectId> getPlants() {
         return plants;
     }
 
-    public void setPlants(List<String> plants) {
+    public void setPlants(List<ObjectId> plants) {
         this.plants = plants;
     }
 
