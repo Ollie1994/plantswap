@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.HashMap;
 
 @Document(collection = "users")
 public class User {
@@ -22,7 +22,7 @@ public class User {
     private String profilePicture;
 
     @DBRef
-    private List<ObjectId> plants; // kanske funkar ?
+    private HashMap<String, ObjectId> plants; // kanske funkar ?
 
     private LocalDateTime createdAt; // Fel datum typ ?
     private LocalDateTime updatedAt; // Fel datum typ ?
@@ -101,11 +101,11 @@ public class User {
         this.profilePicture = profilePicture;
     }
 
-    public List<ObjectId> getPlants() {
+    public HashMap<String, ObjectId> getPlants() {
         return plants;
     }
 
-    public void setPlants(List<ObjectId> plants) {
+    public void setPlants(HashMap<String, ObjectId> plants) {
         this.plants = plants;
     }
 
