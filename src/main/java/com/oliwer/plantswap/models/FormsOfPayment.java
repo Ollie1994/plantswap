@@ -1,10 +1,10 @@
 package com.oliwer.plantswap.models;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class FormsOfPayment {
 
-    private HashMap<String, String> trade;
+    private ArrayList<String> trade;
     private double price;
 
 
@@ -23,11 +23,11 @@ public class FormsOfPayment {
         this.price = price;
     }
 
-    public HashMap<String, String> getTrade() {
+    public ArrayList<String> getTrade() {
         return trade;
     }
 
-    public void setTrade(HashMap<String, String> trade) {
+    public void setTrade(ArrayList<String> trade) {
         this.trade = trade;
     }
 }
