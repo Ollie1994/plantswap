@@ -1,12 +1,11 @@
 package com.oliwer.plantswap.models;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Date;
 
 @Document(collection = "users")
 public class User {
@@ -22,10 +21,10 @@ public class User {
     private String profilePicture;
 
     @DBRef
-    private HashMap<String, ObjectId> plants; // kanske funkar ?
+    private ArrayList<Plant> plants; // kanske funkar ?
 
-    private LocalDateTime createdAt; // Fel datum typ ?
-    private LocalDateTime updatedAt; // Fel datum typ ?
+    private Date createdAt; // Fel datum typ ?
+    private Date updatedAt; // Fel datum typ ?
 
     public User() {
     }
@@ -101,27 +100,27 @@ public class User {
         this.profilePicture = profilePicture;
     }
 
-    public HashMap<String, ObjectId> getPlants() {
+    public ArrayList<Plant> getPlants() {
         return plants;
     }
 
-    public void setPlants(HashMap<String, ObjectId> plants) {
+    public void setPlants(ArrayList<Plant> plants) {
         this.plants = plants;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 }
