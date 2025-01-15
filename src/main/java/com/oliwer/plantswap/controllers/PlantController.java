@@ -93,4 +93,19 @@ public class PlantController {
 
 
 
+
+
+
+/// vettfannnn
+
+  /*  @GetMapping("/test")
+    public ResponseEntity<List<Plant>> test(@RequestParam("user") User user) {
+        List<Plant> plants = plantRepository.findByTest(user);
+
+        return ResponseEntity.ok(plants);
+    } */
+
+
+
+
 }
