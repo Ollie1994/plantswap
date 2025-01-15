@@ -1,5 +1,7 @@
 package com.oliwer.plantswap.models;
 
+import com.oliwer.plantswap.models.Enums.FormOfPayment;
+import com.oliwer.plantswap.models.Enums.PlantStatus;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -22,7 +24,8 @@ public class Plant {
     private String lightRequirement;
     private String waterRequirement;
     private int difficulty;
-    private FormsOfPayment formsOfPayment;
+    private FormOfPayment formOfPayment;
+    private double price;
     private ArrayList<String> photos;
     private PlantStatus plantStatus;
     private Date createdAt;
@@ -38,6 +41,15 @@ public class Plant {
 
 
     //------------------------- Getters & Setters ------------------------------------------------------------------------
+
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
     public String getId() {
         return id;
@@ -103,12 +115,12 @@ public class Plant {
         this.difficulty = difficulty;
     }
 
-    public FormsOfPayment getFormsOfPayment() {
-        return formsOfPayment;
+    public FormOfPayment getFormOfPayment() {
+        return formOfPayment;
     }
 
-    public void setFormsOfPayment(FormsOfPayment formsOfPayment) {
-        this.formsOfPayment = formsOfPayment;
+    public void setFormOfPayment(FormOfPayment formOfPayment) {
+        this.formOfPayment = formOfPayment;
     }
 
     public ArrayList<String> getPhotos() {
