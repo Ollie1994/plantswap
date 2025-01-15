@@ -6,6 +6,7 @@ import com.oliwer.plantswap.repositories.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -34,6 +35,51 @@ public class PlantController {
     public ResponseEntity<List<Plant>> getAllPlants() {
         List<Plant> plants = plantRepository.findAll();
         return ResponseEntity.ok(plants);
+    }
+
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Plant> getPlantById(@PathVariable String id) {
+        Plant plant = plantRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Plant not found"));
+        return ResponseEntity.ok(plant);
+    }
+
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Plant> updatePlant(@PathVariable String id, @RequestBody Plant plant) {
+        Plant existingPlant = plantRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Plant not found"));
+        // uppdatera egenskaper
+       existingPlant.setUser(plant.getUser());
+       existingPlant.setName(plant.getName());
+       existingPlant.setSize(plant.getSize());
+       existingPlant.setStageOfGrowth(plant.getStageOfGrowth());
+       existingPlant.setLightRequirement(plant.getLightRequirement());
+       existingPlant.setWaterRequirement(plant.getWaterRequirement());
+       existingPlant.setDifficulty(plant.getDifficulty());
+       existingPlant.setFormOfPayment(plant.getFormOfPayment());
+       existingPlant.setPrice(plant.getPrice());
+       existingPlant.setPhotos(plant.getPhotos());
+       existingPlant.setPlantStatus(plant.getPlantStatus());
+       existingPlant.setCreatedAt(plant.getCreatedAt());
+       existingPlant.setUpdatedAt(plant.getUpdatedAt());
+       existingPlant.setEndDate(plant.getEndDate());
+
+        return ResponseEntity.ok(plantRepository.save(existingPlant));
+    }
+
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePlant(@PathVariable String id) {
+        if (!plantRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Plant not found");
+        }
+        plantRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 
