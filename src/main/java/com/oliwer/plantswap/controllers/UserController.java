@@ -59,7 +59,6 @@ public class UserController {
         existingUser.setEmail(user.getEmail());
         existingUser.setPassword(user.getPassword());
         existingUser.setProfilePicture(user.getProfilePicture());
-        existingUser.setPlants(user.getPlants());
         existingUser.setUpdatedAt(user.getUpdatedAt());
         existingUser.setCreatedAt(existingUser.getCreatedAt());
         return ResponseEntity.ok(userRepository.save(existingUser));

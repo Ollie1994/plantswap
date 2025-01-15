@@ -1,10 +1,8 @@
 package com.oliwer.plantswap.models;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 @Document(collection = "users")
@@ -19,10 +17,6 @@ public class User {
     private String email;
     private String password;
     private String profilePicture;
-
-    @DBRef
-    private ArrayList<Plant> plants; // kanske funkar ?
-
     private Date createdAt; // Fel datum typ ?
     private Date updatedAt; // Fel datum typ ?
 
@@ -105,13 +99,6 @@ public class User {
         this.profilePicture = profilePicture;
     }
 
-    public ArrayList<Plant> getPlants() {
-        return plants;
-    }
-
-    public void setPlants(ArrayList<Plant> plants) {
-        this.plants = plants;
-    }
 
     public Date getCreatedAt() {
         return createdAt;
