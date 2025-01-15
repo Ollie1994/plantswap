@@ -1,4 +1,4 @@
-package com.oliwer.plantswap.models.Enums;
+package com.oliwer.plantswap.models.enums;
 
 public enum PlantStatus {
 AVAILABLE, RESERVED, SOLD;

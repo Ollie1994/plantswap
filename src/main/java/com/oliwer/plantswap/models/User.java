@@ -27,6 +27,7 @@ public class User {
     private Date updatedAt; // Fel datum typ ?
 
     public User() {
+
     }
 
 

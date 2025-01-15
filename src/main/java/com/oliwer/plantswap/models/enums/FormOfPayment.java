@@ -1,4 +1,4 @@
-package com.oliwer.plantswap.models.Enums;
+package com.oliwer.plantswap.models.enums;
 
 public enum FormOfPayment {
     TRADE, CURRENCY;
