@@ -92,12 +92,6 @@ public class PlantController {
     }
 
 
-
-
-
-
-/// vettfannnn
-
     @GetMapping("/user/{user}")
     public ResponseEntity<List<Plant>> getPlantsByUserId(@PathVariable String user) {
         List<Plant> plants = plantRepository.findByUser(user);
@@ -106,6 +100,18 @@ public class PlantController {
     }
 
 
+
+/*
+    // PATCH TEST
+    @PatchMapping("/patch/{id}")
+    public ResponseEntity<Plant> updateASpecificPlantAttribute(@PathVariable String id, @RequestBody Plant plant) {
+        Plant existingPlant = plantRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Plant not found"));
+
+
+        return ResponseEntity.ok(plantRepository.save(existingPlant));
+    }
+*/
 
 
 }

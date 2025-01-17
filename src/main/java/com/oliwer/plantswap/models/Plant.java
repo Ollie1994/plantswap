@@ -2,6 +2,7 @@ package com.oliwer.plantswap.models;
 
 import com.oliwer.plantswap.models.enums.FormOfPayment;
 import com.oliwer.plantswap.models.enums.PlantStatus;
+import com.oliwer.plantswap.models.enums.Size;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -19,7 +20,7 @@ public class Plant {
     private User user;
 
     private String name;
-    private char size;
+    private Size size;
     private String stageOfGrowth;
     private String lightRequirement;
     private String waterRequirement;
@@ -75,11 +76,11 @@ public class Plant {
         this.name = name;
     }
 
-    public char getSize() {
+    public Size getSize() {
         return size;
     }
 
-    public void setSize(char size) {
+    public void setSize(Size size) {
         this.size = size;
     }
 
