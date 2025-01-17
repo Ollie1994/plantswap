@@ -4,14 +4,14 @@ public class ShippingAddress {
 
     private String country;
     private String city;
-    private String streetAdress;
+    private String streetAddress;
     private String postalCode;
 
 
-    public ShippingAddress(String country, String city, String streetAdress, String postalCode) {
+    public ShippingAddress(String country, String city, String streetAddress, String postalCode) {
         this.country = country;
         this.city = city;
-        this.streetAdress = streetAdress;
+        this.streetAddress = streetAddress;
         this.postalCode = postalCode;
     }
 
@@ -31,12 +31,12 @@ public class ShippingAddress {
         this.city = city;
     }
 
-    public String getStreetAdress() {
-        return streetAdress;
+    public String getStreetAddress() {
+        return streetAddress;
     }
 
-    public void setStreetAdress(String streetAdress) {
-        this.streetAdress = streetAdress;
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
     }
 
     public String getPostalCode() {

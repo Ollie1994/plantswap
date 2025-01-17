@@ -1,9 +1,7 @@
 package com.oliwer.plantswap.controllers;
 
 import com.oliwer.plantswap.models.Transaction;
-import com.oliwer.plantswap.repositories.PlantRepository;
 import com.oliwer.plantswap.repositories.TransactionRepository;
-import com.oliwer.plantswap.repositories.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,13 +13,10 @@ import java.util.List;
 @RequestMapping("/api/transactions")
 public class TransactionController {
 
-    private final UserRepository userRepository;
-    private final PlantRepository plantRepository;
     private final TransactionRepository transactionRepository;
 
-    public TransactionController(UserRepository userRepository, PlantRepository plantRepository, TransactionRepository transactionRepository) {
-        this.userRepository = userRepository;
-        this.plantRepository = plantRepository;
+
+    public TransactionController(TransactionRepository transactionRepository) {
         this.transactionRepository = transactionRepository;
     }
 
@@ -73,12 +68,18 @@ public class TransactionController {
 
 
 
-    @GetMapping("/user/{user}")
-    public ResponseEntity<List<Transaction>> getTransactionsByUserId(@PathVariable String user) {
-        List<Transaction> transactions = transactionRepository.findByUser(user);
+    @GetMapping("/seller/{seller}")
+    public ResponseEntity<List<Transaction>> getTransactionsBySellerId(@PathVariable String seller) {
+        List<Transaction> transactions = transactionRepository.findBySeller(seller);
         return ResponseEntity.ok(transactions);
     }
 
+
+    @GetMapping("/buyer/{buyer}")
+    public ResponseEntity<List<Transaction>> getTransactionsByBuyerId(@PathVariable String buyer) {
+        List<Transaction> transactions = transactionRepository.findByBuyer(buyer);
+        return ResponseEntity.ok(transactions);
+    }
 
 
 
