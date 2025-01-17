@@ -24,9 +24,9 @@ public class Plant {
     private String stageOfGrowth;
     private String lightRequirement;
     private String waterRequirement;
-    private int difficulty;
+    private Integer difficulty;
     private FormOfPayment formOfPayment;
-    private double price;
+    private Double price;
     private ArrayList<String> photos;
     private PlantStatus plantStatus;
     private Date createdAt;
@@ -44,11 +44,11 @@ public class Plant {
     //------------------------- Getters & Setters ------------------------------------------------------------------------
 
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -108,11 +108,11 @@ public class Plant {
         this.waterRequirement = waterRequirement;
     }
 
-    public int getDifficulty() {
+    public Integer getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(int difficulty) {
+    public void setDifficulty(Integer difficulty) {
         this.difficulty = difficulty;
     }
 
