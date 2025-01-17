@@ -1,7 +1,7 @@
 package com.oliwer.plantswap.controllers;
 
 import com.oliwer.plantswap.models.Plant;
-import com.oliwer.plantswap.models.enums.PlantStatus;
+import com.oliwer.plantswap.enums.PlantStatus;
 import com.oliwer.plantswap.repositories.PlantRepository;
 import com.oliwer.plantswap.repositories.UserRepository;
 import org.springframework.http.HttpStatus;

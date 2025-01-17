@@ -1,7 +1,7 @@
 package com.oliwer.plantswap.repositories;
 
 import com.oliwer.plantswap.models.Plant;
-import com.oliwer.plantswap.models.enums.PlantStatus;
+import com.oliwer.plantswap.enums.PlantStatus;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

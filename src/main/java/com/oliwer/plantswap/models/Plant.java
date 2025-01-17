@@ -1,8 +1,8 @@
 package com.oliwer.plantswap.models;
 
-import com.oliwer.plantswap.models.enums.FormOfPayment;
-import com.oliwer.plantswap.models.enums.PlantStatus;
-import com.oliwer.plantswap.models.enums.Size;
+import com.oliwer.plantswap.enums.FormOfPayment;
+import com.oliwer.plantswap.enums.PlantStatus;
+import com.oliwer.plantswap.enums.Size;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;

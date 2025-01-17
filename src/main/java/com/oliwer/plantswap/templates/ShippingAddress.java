@@ -1,4 +1,4 @@
-package com.oliwer.plantswap.models;
+package com.oliwer.plantswap.templates;
 
 public class ShippingAddress {
 

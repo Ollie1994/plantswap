@@ -1,7 +1,8 @@
 package com.oliwer.plantswap.models;
 
-import com.oliwer.plantswap.models.enums.FormOfPayment;
-import com.oliwer.plantswap.models.enums.Status;
+import com.oliwer.plantswap.enums.FormOfPayment;
+import com.oliwer.plantswap.enums.Status;
+import com.oliwer.plantswap.templates.ShippingAddress;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
