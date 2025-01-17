@@ -14,7 +14,7 @@ public class Plant {
 
     @Id
     private String id;
-
+// här jsonignore
     @DBRef
     private User user;
 

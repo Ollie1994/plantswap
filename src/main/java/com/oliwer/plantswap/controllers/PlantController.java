@@ -98,12 +98,12 @@ public class PlantController {
 
 /// vettfannnn
 
-  /*  @GetMapping("/test")
-    public ResponseEntity<List<Plant>> test(@RequestParam("user") User user) {
-        List<Plant> plants = plantRepository.findByTest(user);
+    @GetMapping("/user/{user}")
+    public ResponseEntity<List<Plant>> getPlantsByUserId(@PathVariable String user) {
+        List<Plant> plants = plantRepository.findByUser(user);
 
         return ResponseEntity.ok(plants);
-    } */
+    }
 
 
 

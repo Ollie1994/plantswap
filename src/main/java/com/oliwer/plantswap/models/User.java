@@ -14,6 +14,8 @@ public class User {
     private String username;
     private String firstName;
     private String lastName;
+
+    // @Indexed(unique = true)   KOLLA OCH FIXA
     private String email;
     private String password;
     private String profilePicture;

@@ -9,5 +9,6 @@ import java.util.List;
 public interface PlantRepository extends MongoRepository<Plant, String> {
     List<Plant> findByPlantStatus(PlantStatus plantStatus);
 
+    List<Plant> findByUser(String user);
 }
 
