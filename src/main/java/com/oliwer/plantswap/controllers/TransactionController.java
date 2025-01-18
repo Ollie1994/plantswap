@@ -2,6 +2,7 @@ package com.oliwer.plantswap.controllers;
 
 import com.oliwer.plantswap.models.Transaction;
 import com.oliwer.plantswap.repositories.TransactionRepository;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class TransactionController {
     }
 
     @PostMapping
-    public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction) {
+    public ResponseEntity<Transaction> createTransaction(@Valid @RequestBody Transaction transaction) {
         Transaction savedTransaction = this.transactionRepository.save(transaction);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedTransaction);
 
@@ -46,7 +47,7 @@ public class TransactionController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Transaction> updateTransaction(@PathVariable String id, @RequestBody Transaction transaction) {
+    public ResponseEntity<Transaction> updateTransaction(@PathVariable String id, @Valid @RequestBody Transaction transaction) {
         Transaction existingTransaction = this.transactionRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Transaction not found"));
         // uppdatera egenskaper

@@ -3,6 +3,9 @@ package com.oliwer.plantswap.models;
 import com.oliwer.plantswap.enums.FormOfPayment;
 import com.oliwer.plantswap.enums.Status;
 import com.oliwer.plantswap.templates.ShippingAddress;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,23 +19,39 @@ public class Transaction {
     private String id;
 
     @DBRef
+    @NotNull(message = "Cant be null")
     private User seller;
 
     @DBRef
+    @NotNull(message = "Cant be null")
     private User buyer;
 
     @DBRef
+    @NotNull(message = "Cant be null")
     private Plant sellerPlant;
 
     @DBRef
     private Plant buyerPlant;
 
+    @NotNull(message = "Cant be null")
     private FormOfPayment formOfPayment;
+
+    @Min(value = 50, message = "Min 50")
+    @Max(value = 1000, message = "Max 1000")
     private Double amount;
+
     private ShippingAddress sellerShippingAddress;
+
+    @NotNull (message = "Cant be null")
     private ShippingAddress buyerShippingAddress;
+
+    @NotNull (message = "Cant be null")
     private Status status;
+
+    @NotNull (message = "Cant be null")
     private Date createdAt;
+
+    @NotNull (message = "Cant be null")
     private Date updatedAt;
 
 
@@ -52,27 +71,27 @@ public class Transaction {
         this.id = id;
     }
 
-    public User getSeller() {
+    public @NotNull(message = "Cant be null") User getSeller() {
         return seller;
     }
 
-    public void setSeller(User seller) {
+    public void setSeller(@NotNull(message = "Cant be null") User seller) {
         this.seller = seller;
     }
 
-    public User getBuyer() {
+    public @NotNull(message = "Cant be null") User getBuyer() {
         return buyer;
     }
 
-    public void setBuyer(User buyer) {
+    public void setBuyer(@NotNull(message = "Cant be null") User buyer) {
         this.buyer = buyer;
     }
 
-    public Plant getSellerPlant() {
+    public @NotNull(message = "Cant be null") Plant getSellerPlant() {
         return sellerPlant;
     }
 
-    public void setSellerPlant(Plant sellerPlant) {
+    public void setSellerPlant(@NotNull(message = "Cant be null") Plant sellerPlant) {
         this.sellerPlant = sellerPlant;
     }
 
@@ -84,19 +103,19 @@ public class Transaction {
         this.buyerPlant = buyerPlant;
     }
 
-    public FormOfPayment getFormOfPayment() {
+    public @NotNull(message = "Cant be null") FormOfPayment getFormOfPayment() {
         return formOfPayment;
     }
 
-    public void setFormOfPayment(FormOfPayment formOfPayment) {
+    public void setFormOfPayment(@NotNull(message = "Cant be null") FormOfPayment formOfPayment) {
         this.formOfPayment = formOfPayment;
     }
 
-    public Double getAmount() {
+    public @Min(value = 50, message = "Min 50") @Max(value = 1000, message = "Max 1000") Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(@Min(value = 50, message = "Min 50") @Max(value = 1000, message = "Max 1000") Double amount) {
         this.amount = amount;
     }
 
@@ -108,35 +127,35 @@ public class Transaction {
         this.sellerShippingAddress = sellerShippingAddress;
     }
 
-    public ShippingAddress getBuyerShippingAddress() {
+    public @NotNull(message = "Cant be null") ShippingAddress getBuyerShippingAddress() {
         return buyerShippingAddress;
     }
 
-    public void setBuyerShippingAddress(ShippingAddress buyerShippingAddress) {
+    public void setBuyerShippingAddress(@NotNull(message = "Cant be null") ShippingAddress buyerShippingAddress) {
         this.buyerShippingAddress = buyerShippingAddress;
     }
 
-    public Status getStatus() {
+    public @NotNull(message = "Cant be null") Status getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(@NotNull(message = "Cant be null") Status status) {
         this.status = status;
     }
 
-    public Date getCreatedAt() {
+    public @NotNull(message = "Cant be null") Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(@NotNull(message = "Cant be null") Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public @NotNull(message = "Cant be null") Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(@NotNull(message = "Cant be null") Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

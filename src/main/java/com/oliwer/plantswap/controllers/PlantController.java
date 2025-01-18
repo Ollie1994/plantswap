@@ -3,6 +3,7 @@ package com.oliwer.plantswap.controllers;
 import com.oliwer.plantswap.enums.PlantStatus;
 import com.oliwer.plantswap.models.Plant;
 import com.oliwer.plantswap.repositories.PlantRepository;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class PlantController {
 
 
     @PostMapping
-    public ResponseEntity<Plant> createPlant(@RequestBody Plant plant) {
+    public ResponseEntity<Plant> createPlant(@Valid @RequestBody Plant plant) {
         Plant savedPlant = plantRepository.save(plant);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPlant);
 
@@ -47,7 +48,7 @@ public class PlantController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Plant> updatePlant(@PathVariable String id, @RequestBody Plant plant) {
+    public ResponseEntity<Plant> updatePlant(@PathVariable String id, @Valid @RequestBody Plant plant) {
         Plant existingPlant = plantRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Plant not found"));
         // uppdatera egenskaper
