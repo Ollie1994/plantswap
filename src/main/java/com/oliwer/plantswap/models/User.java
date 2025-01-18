@@ -39,11 +39,9 @@ public class User {
     private String profilePicture;
 
     @NotNull(message = "Cant be null")
-    @NotEmpty(message = "Cant be empty")
     private Date createdAt;// Fel datum typ ?
 
     @NotNull(message = "Cant be null")
-    @NotEmpty(message = "Cant be empty")
     private Date updatedAt; // Fel datum typ ?
 
     public User() {
@@ -72,43 +70,43 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
+    public @NotNull(message = "Cant be null") @NotEmpty(message = "Cant be empty") @Size(max = 20, message = "Can not be more than 20 character") String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(@NotNull(message = "Cant be null") @NotEmpty(message = "Cant be empty") @Size(max = 20, message = "Can not be more than 20 character") String username) {
         this.username = username;
     }
 
-    public String getFirstName() {
+    public @NotNull(message = "Cant be null") @NotEmpty(message = "Cant be empty") @Size(max = 20, message = "Can not be more than 20 character") String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(@NotNull(message = "Cant be null") @NotEmpty(message = "Cant be empty") @Size(max = 20, message = "Can not be more than 20 character") String firstName) {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
+    public @NotNull(message = "Cant be null") @NotEmpty(message = "Cant be empty") @Size(max = 20, message = "Can not be more than 20 character") String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(@NotNull(message = "Cant be null") @NotEmpty(message = "Cant be empty") @Size(max = 20, message = "Can not be more than 20 character") String lastName) {
         this.lastName = lastName;
     }
 
-    public @Email(message = "Not a valid email") String getEmail() {
+    public @Email(message = "Not a valid email") @NotNull(message = "Cant be null") @NotEmpty(message = "Cant be empty") String getEmail() {
         return email;
     }
 
-    public void setEmail(@Email(message = "Not a valid email") String email) {
+    public void setEmail(@Email(message = "Not a valid email") @NotNull(message = "Cant be null") @NotEmpty(message = "Cant be empty") String email) {
         this.email = email;
     }
 
-    public String getPassword() {
+    public @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d).{8,}$", message = "The password must contain atleast 1 capital letter, one number and be 8 characters long ") String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(@Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d).{8,}$", message = "The password must contain atleast 1 capital letter, one number and be 8 characters long ") String password) {
         this.password = password;
     }
 
@@ -120,19 +118,19 @@ public class User {
         this.profilePicture = profilePicture;
     }
 
-    public Date getCreatedAt() {
+    public @NotNull(message = "Cant be null") Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(@NotNull(message = "Cant be null") Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public @NotNull(message = "Cant be null") Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(@NotNull(message = "Cant be null") Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 }
