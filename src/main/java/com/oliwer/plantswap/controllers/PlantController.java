@@ -3,6 +3,7 @@ package com.oliwer.plantswap.controllers;
 import com.oliwer.plantswap.enums.PlantStatus;
 import com.oliwer.plantswap.models.Plant;
 import com.oliwer.plantswap.repositories.PlantRepository;
+import com.oliwer.plantswap.repositories.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +17,27 @@ import java.util.List;
 public class PlantController {
 
     private final PlantRepository plantRepository;
+    private final UserRepository userRepository;
 
-    public PlantController(PlantRepository plantRepository) {
+    public PlantController(PlantRepository plantRepository, UserRepository userRepository) {
         this.plantRepository = plantRepository;
+        this.userRepository = userRepository;
     }
+
+
+
 
 
     @PostMapping
     public ResponseEntity<Plant> createPlant(@Valid @RequestBody Plant plant) {
+
+        if(plant.getUser() != null && !userRepository.existsById(plant.getUser().getId())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
+        }
+            ResponseEntity<List<Plant>> plants = getAllPlants();
+
+
+
         Plant savedPlant = plantRepository.save(plant);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPlant);
 

@@ -56,7 +56,7 @@ public class Plant {
     private Double price;
 
 
-    @Max(value = 5, message = "Max 5")
+    @jakarta.validation.constraints.Size(max = 5, message = "max 5 photos")
     private ArrayList<String> photos;
 
     @NotNull(message = "Cant be null")
@@ -162,11 +162,12 @@ public class Plant {
         this.price = price;
     }
 
-    public @Max(value = 5, message = "Max 5") ArrayList<String> getPhotos() {
+
+    public @jakarta.validation.constraints.Size(max = 5, message = "max 5 photos") ArrayList<String> getPhotos() {
         return photos;
     }
 
-    public void setPhotos(@Max(value = 5, message = "Max 5") ArrayList<String> photos) {
+    public void setPhotos(@jakarta.validation.constraints.Size(max = 5, message = "max 5 photos") ArrayList<String> photos) {
         this.photos = photos;
     }
 
