@@ -34,14 +34,17 @@ public class PlantController {
         if(plant.getUser() != null && !userRepository.existsById(plant.getUser().getId())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
         }
-            ResponseEntity<List<Plant>> plants = getAllPlants();
-
-
 
         Plant savedPlant = plantRepository.save(plant);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPlant);
 
     }
+
+
+
+
+
+
 
 
     @GetMapping
