@@ -1,5 +1,6 @@
 package com.oliwer.plantswap.models;
 
+import jakarta.validation.constraints.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,15 +12,38 @@ public class User {
     @Id
     private String id;
 
+    @NotNull(message = "Cant be null")
+    @NotEmpty(message = "Cant be empty")
+    @Size(max = 20, message = "Can not be more than 20 character")
     private String username;
+
+    @NotNull(message = "Cant be null")
+    @NotEmpty(message = "Cant be empty")
+    @Size(max = 20, message = "Can not be more than 20 character")
     private String firstName;
+
+    @NotNull(message = "Cant be null")
+    @NotEmpty(message = "Cant be empty")
+    @Size(max = 20, message = "Can not be more than 20 character")
     private String lastName;
 
-    // @Indexed(unique = true)   KOLLA OCH FIXA
+   // @Indexed(unique = true)
+    @Email(message = "Not a valid email")
+    @NotNull(message = "Cant be null")
+    @NotEmpty(message = "Cant be empty")
     private String email;
+
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d).{8,}$", message = "The password must contain atleast 1 capital letter, one number and be 8 characters long ")
     private String password;
+
     private String profilePicture;
-    private Date createdAt; // Fel datum typ ?
+
+    @NotNull(message = "Cant be null")
+    @NotEmpty(message = "Cant be empty")
+    private Date createdAt;// Fel datum typ ?
+
+    @NotNull(message = "Cant be null")
+    @NotEmpty(message = "Cant be empty")
     private Date updatedAt; // Fel datum typ ?
 
     public User() {
@@ -40,10 +64,6 @@ public class User {
     //------------------------- Getters & Setters ------------------------------------------------------------------------
 
 
-
-
-
-
     public String getId() {
         return id;
     }
@@ -51,7 +71,6 @@ public class User {
     public void setId(String id) {
         this.id = id;
     }
-
 
     public String getUsername() {
         return username;
@@ -77,11 +96,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
+    public @Email(message = "Not a valid email") String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(@Email(message = "Not a valid email") String email) {
         this.email = email;
     }
 
@@ -100,7 +119,6 @@ public class User {
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
     }
-
 
     public Date getCreatedAt() {
         return createdAt;
