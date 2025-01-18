@@ -1,8 +1,6 @@
 package com.oliwer.plantswap.models;
 
-import com.oliwer.plantswap.enums.FormOfPayment;
-import com.oliwer.plantswap.enums.PlantStatus;
-import com.oliwer.plantswap.enums.Size;
+import com.oliwer.plantswap.enums.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,8 +19,8 @@ public class Plant {
 
     private String name;
     private Size size;
-    private String stageOfGrowth;
-    private String lightRequirement;
+    private StageOfGrowth stageOfGrowth;
+    private LightRequirement lightRequirement;
     private String waterRequirement;
     private Integer difficulty;
     private FormOfPayment formOfPayment;
@@ -84,19 +82,19 @@ public class Plant {
         this.size = size;
     }
 
-    public String getStageOfGrowth() {
+    public StageOfGrowth getStageOfGrowth() {
         return stageOfGrowth;
     }
 
-    public void setStageOfGrowth(String stageOfGrowth) {
+    public void setStageOfGrowth(StageOfGrowth stageOfGrowth) {
         this.stageOfGrowth = stageOfGrowth;
     }
 
-    public String getLightRequirement() {
+    public LightRequirement getLightRequirement() {
         return lightRequirement;
     }
 
-    public void setLightRequirement(String lightRequirement) {
+    public void setLightRequirement(LightRequirement lightRequirement) {
         this.lightRequirement = lightRequirement;
     }
 

@@ -1,9 +1,8 @@
 package com.oliwer.plantswap.controllers;
 
-import com.oliwer.plantswap.models.Plant;
 import com.oliwer.plantswap.enums.PlantStatus;
+import com.oliwer.plantswap.models.Plant;
 import com.oliwer.plantswap.repositories.PlantRepository;
-import com.oliwer.plantswap.repositories.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +14,9 @@ import java.util.List;
 @RequestMapping("/api/plants")
 public class PlantController {
 
-    private final UserRepository userRepository;
     private final PlantRepository plantRepository;
 
-    public PlantController(UserRepository userRepository, PlantRepository plantRepository) {
-        this.userRepository = userRepository;
+    public PlantController(PlantRepository plantRepository) {
         this.plantRepository = plantRepository;
     }
 
