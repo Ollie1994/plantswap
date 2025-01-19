@@ -33,7 +33,7 @@ public class Transaction {
     @DBRef
     private Plant buyerPlant;
 
-    @NotNull(message = "Cant be null")
+   @NotNull(message = "Cant be null")
     private Boolean trade;
 
     @Min(value = 50, message = "Min 50")

@@ -182,12 +182,20 @@ public class Plant {
         this.difficulty = difficulty;
     }
 
-    public @NotNull(message = "Cant be null") Boolean getTrade() {
+    public Boolean getTrade() {
         return trade;
     }
 
-    public void setTrade(@NotNull(message = "Cant be null") Boolean trade) {
+    public void setTrade(Boolean trade) {
         this.trade = trade;
+    }
+
+    public PlantRepository getPlantRepository() {
+        return plantRepository;
+    }
+
+    public UserRepository getUserRepository() {
+        return userRepository;
     }
 
     public @Min(value = 50, message = "Min 50") @Max(value = 1000, message = "Max 1000") Double getPrice() {
@@ -197,6 +205,7 @@ public class Plant {
     public void setPrice(@Min(value = 50, message = "Min 50") @Max(value = 1000, message = "Max 1000") Double price) {
         this.price = price;
     }
+
 
     public @jakarta.validation.constraints.Size(max = 5, message = "max 5 photos") ArrayList<String> getPhotos() {
         return photos;
@@ -236,13 +245,5 @@ public class Plant {
 
     public void setEndDate(@NotNull(message = "Cant be null") Date endDate) {
         this.endDate = endDate;
-    }
-
-    public PlantRepository getPlantRepository() {
-        return plantRepository;
-    }
-
-    public UserRepository getUserRepository() {
-        return userRepository;
     }
 }
