@@ -1,7 +1,11 @@
 package com.oliwer.plantswap.models;
 
-import com.oliwer.plantswap.enums.*;
+import com.oliwer.plantswap.enums.LightRequirement;
+import com.oliwer.plantswap.enums.PlantStatus;
 import com.oliwer.plantswap.enums.Size;
+import com.oliwer.plantswap.enums.StageOfGrowth;
+import com.oliwer.plantswap.repositories.PlantRepository;
+import com.oliwer.plantswap.repositories.UserRepository;
 import jakarta.validation.constraints.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -46,7 +50,7 @@ public class Plant {
     @Max(value = 5, message = "Max 5")
     private Integer difficulty;
 
-    @AssertTrue(message = "Cant be false")
+    @NotNull(message = "Cant be null")
     private Boolean trade;
 
     @Min(value = 50, message = "Min 50")
@@ -69,7 +73,46 @@ public class Plant {
     @NotNull(message = "Cant be null")
     private Date endDate;
 
-    public Plant() {
+
+
+
+    private final PlantRepository plantRepository;
+    private final UserRepository userRepository;
+    //------------------------- CONSTRUCTOR -------------------------------------------------------------------------
+
+    public Plant(String id, User user, String name, Size size, StageOfGrowth stageOfGrowth, LightRequirement lightRequirement, String waterRequirement, Integer difficulty, Boolean trade, Double price, ArrayList<String> photos, PlantStatus plantStatus, Date createdAt, Date updatedAt, Date endDate, PlantRepository plantRepository, UserRepository userRepository) {
+        this.id = id;
+        this.user = user;
+        this.name = name;
+        this.size = size;
+        this.stageOfGrowth = stageOfGrowth;
+        this.lightRequirement = lightRequirement;
+        this.waterRequirement = waterRequirement;
+        this.difficulty = difficulty;
+        this.trade = trade;
+        this.price = price;
+        System.out.println("Pre trade: " + trade);
+        System.out.println("Pre price: " + price);
+        if (price == null && trade == null || price == null && trade == false) {
+            trade = true;
+            this.trade = trade;
+            System.out.println("Trade set to <" + trade + "> because both price was empty and trade not set to true");
+        } else if (trade == true && price != null) {
+            trade = false;
+            this.trade = trade;
+            System.out.println("Trade is set to <" + trade + "> because price is set to a value");
+        } else {
+            this.price = price;
+            this.trade = trade;
+            System.out.println("Trade = " + trade + " and Price = " + price);
+        }
+        this.photos = photos;
+        this.plantStatus = plantStatus;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.endDate = endDate;
+        this.plantRepository = plantRepository;
+        this.userRepository = userRepository;
     }
 
 
@@ -140,12 +183,20 @@ public class Plant {
         this.difficulty = difficulty;
     }
 
-    public @AssertTrue(message = "Cant be false") Boolean getTrade() {
+    public Boolean getTrade() {
         return trade;
     }
 
-    public void setTrade(@AssertTrue(message = "Cant be false") Boolean trade) {
+    public void setTrade(Boolean trade) {
         this.trade = trade;
+    }
+
+    public PlantRepository getPlantRepository() {
+        return plantRepository;
+    }
+
+    public UserRepository getUserRepository() {
+        return userRepository;
     }
 
     public @Min(value = 50, message = "Min 50") @Max(value = 1000, message = "Max 1000") Double getPrice() {

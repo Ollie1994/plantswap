@@ -124,7 +124,7 @@ public class PlantController {
 
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User has " + count + " plants (Max 10)");
         }
-        System.out.println("User has " + count + " plants");
+        System.out.println("User has " + count + " plants"); // skriv om en bit så det blir count in list, plus 1
         return ResponseEntity.ok(count);
     }
 
