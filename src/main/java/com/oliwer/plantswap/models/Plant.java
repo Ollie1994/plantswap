@@ -73,11 +73,10 @@ public class Plant {
     @NotNull(message = "Cant be null")
     private Date endDate;
 
-
-
-
     private final PlantRepository plantRepository;
     private final UserRepository userRepository;
+
+
     //------------------------- CONSTRUCTOR -------------------------------------------------------------------------
 
     public Plant(String id, User user, String name, Size size, StageOfGrowth stageOfGrowth, LightRequirement lightRequirement, String waterRequirement, Integer difficulty, Boolean trade, Double price, ArrayList<String> photos, PlantStatus plantStatus, Date createdAt, Date updatedAt, Date endDate, PlantRepository plantRepository, UserRepository userRepository) {

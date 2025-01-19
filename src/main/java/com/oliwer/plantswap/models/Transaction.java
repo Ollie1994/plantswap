@@ -3,7 +3,6 @@ package com.oliwer.plantswap.models;
 
 import com.oliwer.plantswap.enums.Status;
 import com.oliwer.plantswap.templates.ShippingAddress;
-import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -34,7 +33,7 @@ public class Transaction {
     @DBRef
     private Plant buyerPlant;
 
-    @AssertTrue(message = "Cant be false")
+   @NotNull(message = "Cant be null")
     private Boolean trade;
 
     @Min(value = 50, message = "Min 50")
@@ -49,10 +48,8 @@ public class Transaction {
     @NotNull (message = "Cant be null")
     private Status status;
 
-    @AssertTrue (message = "Cant be false")
     private Boolean sellerAgreementToTrade;
 
-    @AssertTrue (message = "Cant be false")
     private Boolean buyerAgreementToTrade;
 
     @NotNull (message = "Cant be null")
@@ -62,9 +59,12 @@ public class Transaction {
     private Date updatedAt;
 
 
+
+
+    //------------------------- CONSTRUCTOR -------------------------------------------------------------------------
+
     public Transaction() {
     }
-
 
 
     //------------------------- Getters & Setters ------------------------------------------------------------------------
@@ -110,11 +110,11 @@ public class Transaction {
         this.buyerPlant = buyerPlant;
     }
 
-    public @AssertTrue(message = "Cant be false") Boolean getTrade() {
+    public @NotNull(message = "Cant be null") Boolean getTrade() {
         return trade;
     }
 
-    public void setTrade(@AssertTrue(message = "Cant be false") Boolean trade) {
+    public void setTrade(@NotNull(message = "Cant be null") Boolean trade) {
         this.trade = trade;
     }
 
@@ -150,19 +150,19 @@ public class Transaction {
         this.status = status;
     }
 
-    public @AssertTrue(message = "Cant be false") Boolean getSellerAgreementToTrade() {
+    public Boolean getSellerAgreementToTrade() {
         return sellerAgreementToTrade;
     }
 
-    public void setSellerAgreementToTrade(@AssertTrue(message = "Cant be false") Boolean sellerAgreementToTrade) {
+    public void setSellerAgreementToTrade(Boolean sellerAgreementToTrade) {
         this.sellerAgreementToTrade = sellerAgreementToTrade;
     }
 
-    public @AssertTrue(message = "Cant be false") Boolean getBuyerAgreementToTrade() {
+    public Boolean getBuyerAgreementToTrade() {
         return buyerAgreementToTrade;
     }
 
-    public void setBuyerAgreementToTrade(@AssertTrue(message = "Cant be false") Boolean buyerAgreementToTrade) {
+    public void setBuyerAgreementToTrade(Boolean buyerAgreementToTrade) {
         this.buyerAgreementToTrade = buyerAgreementToTrade;
     }
 
