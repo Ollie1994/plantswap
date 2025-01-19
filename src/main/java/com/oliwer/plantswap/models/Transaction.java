@@ -3,6 +3,9 @@ package com.oliwer.plantswap.models;
 
 
 import com.oliwer.plantswap.enums.Status;
+import com.oliwer.plantswap.repositories.PlantRepository;
+import com.oliwer.plantswap.repositories.TransactionRepository;
+import com.oliwer.plantswap.repositories.UserRepository;
 import com.oliwer.plantswap.templates.ShippingAddress;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -34,7 +37,7 @@ public class Transaction {
     @DBRef
     private Plant buyerPlant;
 
-   @NotNull(message = "Cant be null")
+    @NotNull(message = "Cant be null")
     private Boolean trade;
 
     @Min(value = 50, message = "Min 50")
@@ -59,12 +62,31 @@ public class Transaction {
     @NotNull (message = "Cant be null")
     private Date updatedAt;
 
-
+    private final PlantRepository plantRepository;
+    private final UserRepository userRepository;
+    private final TransactionRepository transactionRepository;
 
 
     //------------------------- CONSTRUCTOR -------------------------------------------------------------------------
 
-    public Transaction() {
+    public Transaction(String id, User seller, User buyer, Plant sellerPlant, Plant buyerPlant, Boolean trade, Double amount, ShippingAddress sellerShippingAddress, ShippingAddress buyerShippingAddress, Status status, Boolean sellerAgreementToTrade, Boolean buyerAgreementToTrade, Date createdAt, Date updatedAt, PlantRepository plantRepository, UserRepository userRepository, TransactionRepository transactionRepository) {
+        this.id = id;
+        this.seller = seller;
+        this.buyer = buyer;
+        this.sellerPlant = sellerPlant;
+        this.buyerPlant = buyerPlant;
+        this.trade = trade;
+        this.amount = amount;
+        this.sellerShippingAddress = sellerShippingAddress;
+        this.buyerShippingAddress = buyerShippingAddress;
+        this.status = status;
+        this.sellerAgreementToTrade = sellerAgreementToTrade;
+        this.buyerAgreementToTrade = buyerAgreementToTrade;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.plantRepository = plantRepository;
+        this.userRepository = userRepository;
+        this.transactionRepository = transactionRepository;
     }
 
 
@@ -181,5 +203,18 @@ public class Transaction {
 
     public void setUpdatedAt(@NotNull(message = "Cant be null") Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+
+    public PlantRepository getPlantRepository() {
+        return plantRepository;
+    }
+
+    public UserRepository getUserRepository() {
+        return userRepository;
+    }
+
+    public TransactionRepository getTransactionRepository() {
+        return transactionRepository;
     }
 }
