@@ -22,12 +22,13 @@ public class PlantController {
     public PlantController(PlantRepository plantRepository, UserRepository userRepository) {
         this.plantRepository = plantRepository;
         this.userRepository = userRepository;
+
     }
 
 
 
 
-
+/*
     @PostMapping
     public ResponseEntity<Plant> createPlant(@Valid @RequestBody Plant plant) {
 
@@ -40,9 +41,7 @@ public class PlantController {
 
     }
 
-
-
-
+ */
 
 
 
@@ -110,9 +109,41 @@ public class PlantController {
     @GetMapping("/user/{user}")
     public ResponseEntity<List<Plant>> getPlantsByUserId(@PathVariable String user) {
         List<Plant> plants = plantRepository.findByUser(user);
-
+        Long count = plants.stream().count();
+        System.out.println(count);
         return ResponseEntity.ok(plants);
     }
+
+
+    //TEST för max 10
+    @GetMapping("{user}")
+    public ResponseEntity checkToSeeHowManyPlantsAUserHas(@PathVariable String user) {
+        List<Plant> plants = plantRepository.findByUser(user);
+        Long count = plants.stream().count();
+        if (count >= 10) {
+
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User has " + count + " plants (Max 10)");
+        }
+        System.out.println("User has " + count + " plants");
+        return ResponseEntity.ok(count);
+    }
+
+
+    @PostMapping
+    public ResponseEntity<Plant> createPlantTwo(@Valid @RequestBody Plant plant) {
+
+        if(plant.getUser() != null && !userRepository.existsById(plant.getUser().getId())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
+        }
+        System.out.println("innan check");
+        checkToSeeHowManyPlantsAUserHas(plant.getUser().getId());
+        System.out.println("efter check");
+        Plant savedPlant = plantRepository.save(plant);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedPlant);
+
+    }
+
+
 
 
 
