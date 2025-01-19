@@ -1,3 +1,4 @@
+
 package com.oliwer.plantswap.models;
 
 import com.oliwer.plantswap.enums.LightRequirement;

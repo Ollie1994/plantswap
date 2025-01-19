@@ -1,3 +1,4 @@
+
 package com.oliwer.plantswap.controllers;
 
 import com.oliwer.plantswap.enums.PlantStatus;
@@ -45,8 +46,7 @@ public class PlantController {
 
 
 
-
-    @GetMapping
+@GetMapping
     public ResponseEntity<List<Plant>> getAllPlants() {
         List<Plant> plants = plantRepository.findAll();
         return ResponseEntity.ok(plants);
@@ -161,3 +161,4 @@ public class PlantController {
 
 
 }
+

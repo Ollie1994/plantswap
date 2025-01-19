@@ -1,3 +1,4 @@
+
 package com.oliwer.plantswap.models;
 
 import jakarta.validation.constraints.*;
@@ -134,3 +135,4 @@ public class User {
         this.updatedAt = updatedAt;
     }
 }
+
