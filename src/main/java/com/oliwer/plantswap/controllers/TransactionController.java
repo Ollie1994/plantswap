@@ -60,6 +60,8 @@ public class TransactionController {
         existingTransaction.setSellerShippingAddress(transaction.getSellerShippingAddress());
         existingTransaction.setBuyerShippingAddress(transaction.getBuyerShippingAddress());
         existingTransaction.setStatus(transaction.getStatus());
+        existingTransaction.setSellerAgreementToTrade(transaction.getSellerAgreementToTrade());
+        existingTransaction.setBuyerAgreementToTrade(transaction.getBuyerAgreementToTrade());
         existingTransaction.setCreatedAt(transaction.getCreatedAt());
         existingTransaction.setUpdatedAt(transaction.getUpdatedAt());
 

@@ -3,6 +3,7 @@ package com.oliwer.plantswap.models;
 import com.oliwer.plantswap.enums.FormOfPayment;
 import com.oliwer.plantswap.enums.Status;
 import com.oliwer.plantswap.templates.ShippingAddress;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -47,6 +48,12 @@ public class Transaction {
 
     @NotNull (message = "Cant be null")
     private Status status;
+
+    @AssertTrue (message = "Cant be false")
+    private Boolean sellerAgreementToTrade;
+
+    @AssertTrue (message = "Cant be false")
+    private Boolean buyerAgreementToTrade;
 
     @NotNull (message = "Cant be null")
     private Date createdAt;
@@ -141,6 +148,22 @@ public class Transaction {
 
     public void setStatus(@NotNull(message = "Cant be null") Status status) {
         this.status = status;
+    }
+
+    public @AssertTrue(message = "Cant be false") Boolean getSellerAgreementToTrade() {
+        return sellerAgreementToTrade;
+    }
+
+    public void setSellerAgreementToTrade(@AssertTrue(message = "Cant be false") Boolean sellerAgreementToTrade) {
+        this.sellerAgreementToTrade = sellerAgreementToTrade;
+    }
+
+    public @AssertTrue(message = "Cant be false") Boolean getBuyerAgreementToTrade() {
+        return buyerAgreementToTrade;
+    }
+
+    public void setBuyerAgreementToTrade(@AssertTrue(message = "Cant be false") Boolean buyerAgreementToTrade) {
+        this.buyerAgreementToTrade = buyerAgreementToTrade;
     }
 
     public @NotNull(message = "Cant be null") Date getCreatedAt() {
