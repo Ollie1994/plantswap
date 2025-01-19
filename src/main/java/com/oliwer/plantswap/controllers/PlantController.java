@@ -75,7 +75,7 @@ public class PlantController {
        existingPlant.setLightRequirement(plant.getLightRequirement());
        existingPlant.setWaterRequirement(plant.getWaterRequirement());
        existingPlant.setDifficulty(plant.getDifficulty());
-       existingPlant.setFormOfPayment(plant.getFormOfPayment());
+       existingPlant.setTrade(plant.getTrade());
        existingPlant.setPrice(plant.getPrice());
        existingPlant.setPhotos(plant.getPhotos());
        existingPlant.setPlantStatus(plant.getPlantStatus());

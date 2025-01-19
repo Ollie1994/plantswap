@@ -1,6 +1,6 @@
 package com.oliwer.plantswap.models;
 
-import com.oliwer.plantswap.enums.FormOfPayment;
+
 import com.oliwer.plantswap.enums.Status;
 import com.oliwer.plantswap.templates.ShippingAddress;
 import jakarta.validation.constraints.AssertTrue;
@@ -34,8 +34,8 @@ public class Transaction {
     @DBRef
     private Plant buyerPlant;
 
-    @NotNull(message = "Cant be null")
-    private FormOfPayment formOfPayment;
+    @AssertTrue(message = "Cant be false")
+    private Boolean trade;
 
     @Min(value = 50, message = "Min 50")
     @Max(value = 1000, message = "Max 1000")
@@ -110,12 +110,12 @@ public class Transaction {
         this.buyerPlant = buyerPlant;
     }
 
-    public @NotNull(message = "Cant be null") FormOfPayment getFormOfPayment() {
-        return formOfPayment;
+    public @AssertTrue(message = "Cant be false") Boolean getTrade() {
+        return trade;
     }
 
-    public void setFormOfPayment(@NotNull(message = "Cant be null") FormOfPayment formOfPayment) {
-        this.formOfPayment = formOfPayment;
+    public void setTrade(@AssertTrue(message = "Cant be false") Boolean trade) {
+        this.trade = trade;
     }
 
     public @Min(value = 50, message = "Min 50") @Max(value = 1000, message = "Max 1000") Double getAmount() {

@@ -1,10 +1,8 @@
 package com.oliwer.plantswap.models;
 
 import com.oliwer.plantswap.enums.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import com.oliwer.plantswap.enums.Size;
+import jakarta.validation.constraints.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -48,8 +46,8 @@ public class Plant {
     @Max(value = 5, message = "Max 5")
     private Integer difficulty;
 
-    @NotNull(message = "Cant be null")
-    private FormOfPayment formOfPayment;
+    @AssertTrue(message = "Cant be false")
+    private Boolean trade;
 
     @Min(value = 50, message = "Min 50")
     @Max(value = 1000, message = "Max 1000")
@@ -75,11 +73,7 @@ public class Plant {
     }
 
 
-
-
-
-
-    //------------------------- Getters & Setters ------------------------------------------------------------------------
+//------------------------- Getters & Setters ------------------------------------------------------------------------
 
 
     public String getId() {
@@ -146,12 +140,12 @@ public class Plant {
         this.difficulty = difficulty;
     }
 
-    public @NotNull(message = "Cant be null") FormOfPayment getFormOfPayment() {
-        return formOfPayment;
+    public @AssertTrue(message = "Cant be false") Boolean getTrade() {
+        return trade;
     }
 
-    public void setFormOfPayment(@NotNull(message = "Cant be null") FormOfPayment formOfPayment) {
-        this.formOfPayment = formOfPayment;
+    public void setTrade(@AssertTrue(message = "Cant be false") Boolean trade) {
+        this.trade = trade;
     }
 
     public @Min(value = 50, message = "Min 50") @Max(value = 1000, message = "Max 1000") Double getPrice() {

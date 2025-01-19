@@ -55,7 +55,7 @@ public class TransactionController {
         existingTransaction.setBuyer(transaction.getBuyer());
         existingTransaction.setSellerPlant(transaction.getSellerPlant());
         existingTransaction.setBuyerPlant(transaction.getBuyerPlant());
-        existingTransaction.setFormOfPayment(transaction.getFormOfPayment());
+        existingTransaction.setTrade(transaction.getTrade());
         existingTransaction.setAmount(transaction.getAmount());
         existingTransaction.setSellerShippingAddress(transaction.getSellerShippingAddress());
         existingTransaction.setBuyerShippingAddress(transaction.getBuyerShippingAddress());
