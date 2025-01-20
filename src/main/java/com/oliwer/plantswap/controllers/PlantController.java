@@ -46,7 +46,7 @@ public class PlantController {
 
 
 
-@GetMapping
+    @GetMapping
     public ResponseEntity<List<Plant>> getAllPlants() {
         List<Plant> plants = plantRepository.findAll();
         return ResponseEntity.ok(plants);
@@ -114,17 +114,18 @@ public class PlantController {
         return ResponseEntity.ok(plants);
     }
 
-
+// ta bort get mappign path och responseneity
     //TEST för max 10
     @GetMapping("{user}")
     public ResponseEntity checkToSeeHowManyPlantsAUserHas(@PathVariable String user) {
         List<Plant> plants = plantRepository.findByUser(user);
         Long count = plants.stream().count();
         if (count >= 10) {
-
+            // illigal argument exception
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User has " + count + " plants (Max 10)");
         }
         System.out.println("User has " + count + " plants"); // skriv om en bit så det blir count in list, plus 1
+       //rutnera bara count
         return ResponseEntity.ok(count);
     }
 
