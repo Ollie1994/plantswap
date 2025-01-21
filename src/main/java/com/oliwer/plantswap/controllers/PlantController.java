@@ -5,6 +5,7 @@ import com.oliwer.plantswap.enums.PlantStatus;
 import com.oliwer.plantswap.models.Plant;
 import com.oliwer.plantswap.repositories.PlantRepository;
 import com.oliwer.plantswap.repositories.UserRepository;
+import com.oliwer.plantswap.services.PlantService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,30 +20,35 @@ public class PlantController {
 
     private final PlantRepository plantRepository;
     private final UserRepository userRepository;
+    private final PlantService plantService;
 
-    public PlantController(PlantRepository plantRepository, UserRepository userRepository) {
+    public PlantController(PlantRepository plantRepository, UserRepository userRepository, PlantService plantService) {
         this.plantRepository = plantRepository;
         this.userRepository = userRepository;
-
+        this.plantService = plantService;
     }
 
 
 
 
-/*
+
     @PostMapping
     public ResponseEntity<Plant> createPlant(@Valid @RequestBody Plant plant) {
-
-        if(plant.getUser() != null && !userRepository.existsById(plant.getUser().getId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
-        }
-
-        Plant savedPlant = plantRepository.save(plant);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedPlant);
-
+        plantService.checkToSeeHowManyPlantsAUserHas(plant.getUser().getId());
+        Plant newPlant = plantService.createPlant(plant);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newPlant);
     }
 
- */
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -114,35 +120,10 @@ public class PlantController {
         return ResponseEntity.ok(plants);
     }
 
-// ta bort get mappign path och responseneity
-    //TEST för max 10
-    @GetMapping("{user}")
-    public ResponseEntity checkToSeeHowManyPlantsAUserHas(@PathVariable String user) {
-        List<Plant> plants = plantRepository.findByUser(user);
-        Long count = plants.stream().count();
-        if (count >= 10) {
-            // illigal argument exception
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User has " + count + " plants (Max 10)");
-        }
-        System.out.println("User has " + count + " plants"); // skriv om en bit så det blir count in list, plus 1
-       //rutnera bara count
-        return ResponseEntity.ok(count);
-    }
 
 
-    @PostMapping
-    public ResponseEntity<Plant> createPlantTwo(@Valid @RequestBody Plant plant) {
 
-        if(plant.getUser() != null && !userRepository.existsById(plant.getUser().getId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
-        }
-        System.out.println("innan check");
-        checkToSeeHowManyPlantsAUserHas(plant.getUser().getId());
-        System.out.println("efter check");
-        Plant savedPlant = plantRepository.save(plant);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedPlant);
 
-    }
 
 
 
