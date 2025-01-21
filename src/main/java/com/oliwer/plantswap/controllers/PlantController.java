@@ -28,97 +28,61 @@ public class PlantController {
         this.plantService = plantService;
     }
 
-
-
-
+//------------------------------- METHODS ------------------------------------------------------------------------------
 
     @PostMapping
     public ResponseEntity<Plant> createPlant(@Valid @RequestBody Plant plant) {
-        plantService.checkToSeeHowManyPlantsAUserHas(plant.getUser().getId());
         Plant newPlant = plantService.createPlant(plant);
         return ResponseEntity.status(HttpStatus.CREATED).body(newPlant);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     @GetMapping
     public ResponseEntity<List<Plant>> getAllPlants() {
-        List<Plant> plants = plantRepository.findAll();
+        List<Plant> plants = plantService.getAllPlants();
         return ResponseEntity.ok(plants);
     }
 
+    @GetMapping("/plantStatus/{plantStatus}")
+    public ResponseEntity<List<Plant>> getAllPlantsByAvailability(@PathVariable PlantStatus plantStatus) {
+        List<Plant> plants = plantService.getAllAvailablePlants(plantStatus);
+        Long count = plants.stream().count();
+        System.out.println(count);
+        return ResponseEntity.ok(plants);
+    }
 
+    @GetMapping("/user/{user}")
+    public ResponseEntity<List<Plant>> getAllPlantsByUserId(@PathVariable String user) {
+        List<Plant> plants = plantService.getAllPlantsByUserId(user);
+        Long count = plants.stream().count();
+        System.out.println(count);
+        return ResponseEntity.ok(plants);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Plant> getPlantById(@PathVariable String id) {
-        Plant plant = plantRepository.findById(id)
+        Plant plant = plantService.getPlantById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Plant not found"));
         return ResponseEntity.ok(plant);
     }
 
-
-
+    // fick inte patch att funka
     @PutMapping("/{id}")
     public ResponseEntity<Plant> updatePlant(@PathVariable String id, @Valid @RequestBody Plant plant) {
-        Plant existingPlant = plantRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Plant not found"));
-        // uppdatera egenskaper
-       existingPlant.setUser(plant.getUser());
-       existingPlant.setName(plant.getName());
-       existingPlant.setSize(plant.getSize());
-       existingPlant.setStageOfGrowth(plant.getStageOfGrowth());
-       existingPlant.setLightRequirement(plant.getLightRequirement());
-       existingPlant.setWaterRequirement(plant.getWaterRequirement());
-       existingPlant.setDifficulty(plant.getDifficulty());
-       existingPlant.setTrade(plant.getTrade());
-       existingPlant.setPrice(plant.getPrice());
-       existingPlant.setPhotos(plant.getPhotos());
-       existingPlant.setPlantStatus(plant.getPlantStatus());
-       existingPlant.setCreatedAt(plant.getCreatedAt());
-       existingPlant.setUpdatedAt(plant.getUpdatedAt());
-       existingPlant.setEndDate(plant.getEndDate());
-
-        return ResponseEntity.ok(plantRepository.save(existingPlant));
+        Plant existingPlant = plantService.updatePlant(id, plant);
+        return ResponseEntity.ok(existingPlant);
     }
 
-
-
+    // skippa service här för det blev så knäppt.
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePlant(@PathVariable String id) {
-        if (!plantRepository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Plant not found");
+        if(!plantRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "plant not found");
         }
         plantRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
 
-    @GetMapping("/getAllAvailablePlants")
-    public ResponseEntity<List<Plant>> getAllAvailablePlants(@RequestParam("plantStatus") PlantStatus plantStatus) {
-        List<Plant> plants = plantRepository.findByPlantStatus(plantStatus);
-
-        return ResponseEntity.ok(plants);
-    }
-
-
-    @GetMapping("/user/{user}")
-    public ResponseEntity<List<Plant>> getPlantsByUserId(@PathVariable String user) {
-        List<Plant> plants = plantRepository.findByUser(user);
-        Long count = plants.stream().count();
-        System.out.println(count);
-        return ResponseEntity.ok(plants);
-    }
 
 
 
@@ -129,17 +93,7 @@ public class PlantController {
 
 
 
-/*
-    // PATCH TEST
-    @PatchMapping("/patch/{id}")
-    public ResponseEntity<Plant> updateASpecificPlantAttribute(@PathVariable String id, @RequestBody Plant plant) {
-        Plant existingPlant = plantRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Plant not found"));
 
-
-        return ResponseEntity.ok(plantRepository.save(existingPlant));
-    }
-*/
 
 
 }

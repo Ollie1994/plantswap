@@ -1,14 +1,9 @@
 
 package com.oliwer.plantswap.models;
 
-import com.oliwer.plantswap.enums.LightRequirement;
-import com.oliwer.plantswap.enums.PlantStatus;
+import com.oliwer.plantswap.enums.*;
 import com.oliwer.plantswap.enums.Size;
-import com.oliwer.plantswap.enums.StageOfGrowth;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -29,7 +24,7 @@ public class Plant {
 
     @NotNull(message = "Cant be null")
     @NotEmpty(message = "Cant be empty")
-    @jakarta.validation.constraints.Size(max = 20, message = "max 20 characters")
+    @jakarta.validation.constraints.Size(max = 100, message = "max 100 characters")
     private String name;
 
     @NotNull(message = "Cant be null")
@@ -53,10 +48,9 @@ public class Plant {
     private Integer difficulty;
 
     @NotNull(message = "Cant be null")
-    private Boolean trade;
+    private FormOfPayment formOfPayment;
 
-    @Min(value = 50, message = "Min 50")
-    @Max(value = 1000, message = "Max 1000")
+    @NotNull(message = "Cant be null")
     private Double price;
 
 
@@ -103,11 +97,11 @@ public class Plant {
         this.user = user;
     }
 
-    public @NotNull(message = "Cant be null") @NotEmpty(message = "Cant be empty") @jakarta.validation.constraints.Size(max = 20, message = "max 20 characters") String getName() {
+    public @NotNull(message = "Cant be null") @NotEmpty(message = "Cant be empty") @jakarta.validation.constraints.Size(max = 100, message = "max 100 characters") String getName() {
         return name;
     }
 
-    public void setName(@NotNull(message = "Cant be null") @NotEmpty(message = "Cant be empty") @jakarta.validation.constraints.Size(max = 20, message = "max 20 characters") String name) {
+    public void setName(@NotNull(message = "Cant be null") @NotEmpty(message = "Cant be empty") @jakarta.validation.constraints.Size(max = 100, message = "max 100 characters") String name) {
         this.name = name;
     }
 
@@ -151,24 +145,22 @@ public class Plant {
         this.difficulty = difficulty;
     }
 
-    public Boolean getTrade() {
-        return trade;
+
+    public @NotNull(message = "Cant be null") FormOfPayment getFormOfPayment() {
+        return formOfPayment;
     }
 
-    public void setTrade(Boolean trade) {
-        this.trade = trade;
+    public void setFormOfPayment(@NotNull(message = "Cant be null") FormOfPayment formOfPayment) {
+        this.formOfPayment = formOfPayment;
     }
 
-
-
-    public @Min(value = 50, message = "Min 50") @Max(value = 1000, message = "Max 1000") Double getPrice() {
+    public @NotNull(message = "Cant be null") Double getPrice() {
         return price;
     }
 
-    public void setPrice(@Min(value = 50, message = "Min 50") @Max(value = 1000, message = "Max 1000") Double price) {
+    public void setPrice(@NotNull(message = "Cant be null") Double price) {
         this.price = price;
     }
-
 
     public @jakarta.validation.constraints.Size(max = 5, message = "max 5 photos") ArrayList<String> getPhotos() {
         return photos;
