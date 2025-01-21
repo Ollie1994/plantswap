@@ -38,9 +38,8 @@ public class Plant {
 
     @NotEmpty(message = "Cant be empty")
     @NotNull(message = "Cant be null")
-    @jakarta.validation.constraints.Size(max = 100, message = "max 100 characters")
+    @jakarta.validation.constraints.Size(max = 500, message = "max 300 characters")
     private String waterRequirement;
-
 
     @NotNull(message = "Cant be null")
     @Min(value = 1, message = "Min 1")
@@ -129,11 +128,11 @@ public class Plant {
         this.lightRequirement = lightRequirement;
     }
 
-    public @NotEmpty(message = "Cant be empty") @NotNull(message = "Cant be null") @jakarta.validation.constraints.Size(max = 100, message = "max 100 characters") String getWaterRequirement() {
+    public @NotEmpty(message = "Cant be empty") @NotNull(message = "Cant be null") @jakarta.validation.constraints.Size(max = 500, message = "max 300 characters") String getWaterRequirement() {
         return waterRequirement;
     }
 
-    public void setWaterRequirement(@NotEmpty(message = "Cant be empty") @NotNull(message = "Cant be null") @jakarta.validation.constraints.Size(max = 100, message = "max 100 characters") String waterRequirement) {
+    public void setWaterRequirement(@NotEmpty(message = "Cant be empty") @NotNull(message = "Cant be null") @jakarta.validation.constraints.Size(max = 500, message = "max 300 characters") String waterRequirement) {
         this.waterRequirement = waterRequirement;
     }
 
@@ -144,7 +143,6 @@ public class Plant {
     public void setDifficulty(@NotNull(message = "Cant be null") @Min(value = 1, message = "Min 1") @Max(value = 5, message = "Max 5") Integer difficulty) {
         this.difficulty = difficulty;
     }
-
 
     public @NotNull(message = "Cant be null") FormOfPayment getFormOfPayment() {
         return formOfPayment;

@@ -2,34 +2,50 @@
 package com.oliwer.plantswap.controllers;
 
 import com.oliwer.plantswap.models.Transaction;
-import com.oliwer.plantswap.repositories.TransactionRepository;
+import com.oliwer.plantswap.repositories.PlantRepository;
+import com.oliwer.plantswap.repositories.UserRepository;
+import com.oliwer.plantswap.services.TransactionService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/transactions")
 public class TransactionController {
 
-    private final TransactionRepository transactionRepository;
+    private final PlantRepository plantRepository;
+    private final UserRepository userRepository;
+    private final TransactionService transactionService;
 
 
-    public TransactionController(TransactionRepository transactionRepository) {
-        this.transactionRepository = transactionRepository;
+    public TransactionController(PlantRepository plantRepository, UserRepository userRepository, TransactionService transactionService) {
+        this.plantRepository = plantRepository;
+        this.userRepository = userRepository;
+        this.transactionService = transactionService;
     }
+
+
+
+//------------------------------- METHODS ------------------------------------------------------------------------------
 
     @PostMapping
     public ResponseEntity<Transaction> createTransaction(@Valid @RequestBody Transaction transaction) {
-        Transaction savedTransaction = this.transactionRepository.save(transaction);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedTransaction);
+        Transaction newTransaction = transactionService.createTransaction(transaction);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newTransaction);
 
     }
 
 
+
+
+
+
+
+/*
     @GetMapping
     public ResponseEntity<List<Transaction>> getAllTransactions() {
         List<Transaction> transactions = transactionRepository.findAll();
@@ -56,11 +72,10 @@ public class TransactionController {
         existingTransaction.setBuyer(transaction.getBuyer());
         existingTransaction.setSellerPlant(transaction.getSellerPlant());
         existingTransaction.setBuyerPlant(transaction.getBuyerPlant());
-        existingTransaction.setTrade(transaction.getTrade());
-        existingTransaction.setAmount(transaction.getAmount());
+        existingTransaction.setFormOfPayment(transaction.getFormOfPayment());
+        existingTransaction.setPrice(transaction.getPrice());
         existingTransaction.setSellerShippingAddress(transaction.getSellerShippingAddress());
         existingTransaction.setBuyerShippingAddress(transaction.getBuyerShippingAddress());
-        existingTransaction.setStatus(transaction.getStatus());
         existingTransaction.setSellerAgreementToTrade(transaction.getSellerAgreementToTrade());
         existingTransaction.setBuyerAgreementToTrade(transaction.getBuyerAgreementToTrade());
         existingTransaction.setCreatedAt(transaction.getCreatedAt());
@@ -87,6 +102,8 @@ public class TransactionController {
 
 
 
+
+ */
 
 
 

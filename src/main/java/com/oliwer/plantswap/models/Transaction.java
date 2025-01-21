@@ -2,9 +2,8 @@
 package com.oliwer.plantswap.models;
 
 
-import com.oliwer.plantswap.enums.Status;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+import com.oliwer.plantswap.enums.FormOfPayment;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -34,11 +33,7 @@ public class Transaction {
     private Plant buyerPlant;
 
     @NotNull(message = "Cant be null")
-    private Boolean trade;
-
-    @Min(value = 50, message = "Min 50")
-    @Max(value = 1000, message = "Max 1000")
-    private Double amount;
+    private FormOfPayment formOfPayment;
 
     private ShippingAddress sellerShippingAddress;
 
@@ -46,10 +41,12 @@ public class Transaction {
     private ShippingAddress buyerShippingAddress;
 
     @NotNull (message = "Cant be null")
-    private Status status;
+    private Double price;
 
+    @AssertTrue(message = "Have to be true")
     private Boolean sellerAgreementToTrade;
 
+    @AssertTrue(message = "Have to be true")
     private Boolean buyerAgreementToTrade;
 
     @NotNull (message = "Cant be null")
@@ -110,20 +107,12 @@ public class Transaction {
         this.buyerPlant = buyerPlant;
     }
 
-    public @NotNull(message = "Cant be null") Boolean getTrade() {
-        return trade;
+    public @NotNull(message = "Cant be null") FormOfPayment getFormOfPayment() {
+        return formOfPayment;
     }
 
-    public void setTrade(@NotNull(message = "Cant be null") Boolean trade) {
-        this.trade = trade;
-    }
-
-    public @Min(value = 50, message = "Min 50") @Max(value = 1000, message = "Max 1000") Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(@Min(value = 50, message = "Min 50") @Max(value = 1000, message = "Max 1000") Double amount) {
-        this.amount = amount;
+    public void setFormOfPayment(@NotNull(message = "Cant be null") FormOfPayment formOfPayment) {
+        this.formOfPayment = formOfPayment;
     }
 
     public ShippingAddress getSellerShippingAddress() {
@@ -142,27 +131,27 @@ public class Transaction {
         this.buyerShippingAddress = buyerShippingAddress;
     }
 
-    public @NotNull(message = "Cant be null") Status getStatus() {
-        return status;
+    public @NotNull(message = "Cant be null") Double getPrice() {
+        return price;
     }
 
-    public void setStatus(@NotNull(message = "Cant be null") Status status) {
-        this.status = status;
+    public void setPrice(@NotNull(message = "Cant be null") Double price) {
+        this.price = price;
     }
 
-    public Boolean getSellerAgreementToTrade() {
+    public @AssertTrue(message = "Have to be true") Boolean getSellerAgreementToTrade() {
         return sellerAgreementToTrade;
     }
 
-    public void setSellerAgreementToTrade(Boolean sellerAgreementToTrade) {
+    public void setSellerAgreementToTrade(@AssertTrue(message = "Have to be true") Boolean sellerAgreementToTrade) {
         this.sellerAgreementToTrade = sellerAgreementToTrade;
     }
 
-    public Boolean getBuyerAgreementToTrade() {
+    public @AssertTrue(message = "Have to be true") Boolean getBuyerAgreementToTrade() {
         return buyerAgreementToTrade;
     }
 
-    public void setBuyerAgreementToTrade(Boolean buyerAgreementToTrade) {
+    public void setBuyerAgreementToTrade(@AssertTrue(message = "Have to be true") Boolean buyerAgreementToTrade) {
         this.buyerAgreementToTrade = buyerAgreementToTrade;
     }
 
@@ -181,7 +170,4 @@ public class Transaction {
     public void setUpdatedAt(@NotNull(message = "Cant be null") Date updatedAt) {
         this.updatedAt = updatedAt;
     }
-
-
-
 }

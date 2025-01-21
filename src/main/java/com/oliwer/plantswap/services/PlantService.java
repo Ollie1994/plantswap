@@ -15,7 +15,7 @@ import java.util.Optional;
 @Service
 public class PlantService {
 
-    private final TransactionRepository transactionRepository;
+    private TransactionRepository transactionRepository;
     private PlantRepository plantRepository;
     private UserRepository userRepository;
 
