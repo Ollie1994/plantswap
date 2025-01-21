@@ -29,19 +29,16 @@ public class TransactionService {
 
     public Transaction createTransaction(Transaction transaction) {
        getTransactionAndValidate(transaction.getFormOfPayment(),transaction.getPrice());
-
        User seller = getSellerAndValidate(transaction.getSeller());
        User buyer = getBuyerAndValidate(transaction.getBuyer());
        transaction.setSeller(seller);
        transaction.setBuyer(buyer);
        validateUserCombination(seller, buyer);
-
-
-
        Plant sellerPlant = getSellerPlantAndValidate(transaction.getSellerPlant());
        transaction.setSellerPlant(sellerPlant);
        transaction.getSellerPlant().setPlantStatus(PlantStatus.SOLD);
-        if (transaction.getBuyerPlant() != null) {
+
+       if (transaction.getBuyerPlant() != null) {
             Plant buyerPlant = getBuyerPlantAndValidate(transaction.getBuyerPlant());
             transaction.setBuyerPlant(buyerPlant);
             validatePlantCombination(sellerPlant, buyerPlant);
@@ -50,8 +47,18 @@ public class TransactionService {
             }
             plantRepository.save(buyerPlant);
         }
-        plantRepository.save(sellerPlant);
 
+        if (transaction.getFormOfPayment() == FormOfPayment.TRADE && transaction.getSellerPlant().getFormOfPayment() == FormOfPayment.TRADE &&
+                transaction.getBuyerPlant().getFormOfPayment() == FormOfPayment.TRADE) {
+            if (transaction.getSellerAgreementToTrade() == null || transaction.getBuyerAgreementToTrade() == null
+            ||transaction.getSellerAgreementToTrade() == false || transaction.getBuyerAgreementToTrade() == false) {
+                throw new IllegalArgumentException("Both Seller and Buyer must have agreed to the trade");
+            }
+
+        }
+
+
+        plantRepository.save(sellerPlant);
         return transactionRepository.save(transaction);
     }
 
@@ -133,7 +140,6 @@ public class TransactionService {
     }
 
     private void getTransactionAndValidate(FormOfPayment formOfPayment, Double price) {
-        // första kolla om id är tomt eller null
         if (formOfPayment == null && price == null ||
                 formOfPayment == null && price < 50 ||
                 formOfPayment == null && price > 1000 ||
