@@ -32,9 +32,10 @@ public class PlantService {
 
     public Plant createPlant(Plant plant) {
         User user = getUserAndValidate(plant.getUser());
-        checkToSeeHowManyPlantsAUserHas(plant.getUser().getId());
-        getPlantAndValidate(plant.getFormOfPayment(), plant.getPrice());
         plant.setUser(user);
+        checkToSeeHowManyPlantsAUserHas(plant.getUser().getId());
+        getPlantAndCompare(plant.getFormOfPayment(), plant.getPrice());
+
         return plantRepository.save(plant);
     }
 
@@ -84,11 +85,9 @@ public class PlantService {
 //------------------------------- HELPERS ------------------------------------------------------------------------------
 
     private User getUserAndValidate(User user) {
-        // första kolla om id är tomt eller null
         if(user == null || user.getId() == null) {
             throw new IllegalArgumentException("ID cannot be null");
         }
-        // kolla i collection om author finns, kasta fel om ej finns
         return userRepository.findById(user.getId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found!"));
     }
@@ -103,7 +102,7 @@ public class PlantService {
         System.out.println("User now has " + (count + 1) + " plants");
     }
 
-    private void getPlantAndValidate(FormOfPayment formOfPayment, Double price) {
+    private void getPlantAndCompare(FormOfPayment formOfPayment, Double price) {
         // första kolla om id är tomt eller null
         if (formOfPayment == null && price == null ||
                 formOfPayment == null && price < 50 ||
