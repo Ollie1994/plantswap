@@ -8,10 +8,10 @@ import com.oliwer.plantswap.services.TransactionService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/transactions")
@@ -21,14 +21,11 @@ public class TransactionController {
     private final UserRepository userRepository;
     private final TransactionService transactionService;
 
-
     public TransactionController(PlantRepository plantRepository, UserRepository userRepository, TransactionService transactionService) {
         this.plantRepository = plantRepository;
         this.userRepository = userRepository;
         this.transactionService = transactionService;
     }
-
-
 
 //------------------------------- METHODS ------------------------------------------------------------------------------
 
@@ -39,73 +36,40 @@ public class TransactionController {
 
     }
 
-
-
-
-
-
-
-/*
     @GetMapping
     public ResponseEntity<List<Transaction>> getAllTransactions() {
-        List<Transaction> transactions = transactionRepository.findAll();
+        List<Transaction> transactions = transactionService.getAllTransactions();
         return ResponseEntity.ok(transactions);
     }
 
+    @GetMapping("/seller/{seller}")
+    public ResponseEntity<List<Transaction>> getAllTransactionsBySellerId(@PathVariable String seller) {
+        List<Transaction> transactions = transactionService.getAllTransactionsBySellerId(seller);
+        Long count = transactions.stream().count();
+        System.out.println(count);
+        return ResponseEntity.ok(transactions);
+    }
 
+    @GetMapping("/buyer/{buyer}")
+    public ResponseEntity<List<Transaction>> getAllTransactionsByBuyerId(@PathVariable String buyer) {
+        List<Transaction> transactions = transactionService.getAllTransactionsByBuyerId(buyer);
+        Long count = transactions.stream().count();
+        System.out.println(count);
+        return ResponseEntity.ok(transactions);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Transaction> getTransactionById(@PathVariable String id) {
-        Transaction transaction = this.transactionRepository.findById(id)
+        Transaction transaction = transactionService.getTransactionById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Transaction not found"));
         return ResponseEntity.ok(transaction);
     }
 
-
-
     @PutMapping("/{id}")
     public ResponseEntity<Transaction> updateTransaction(@PathVariable String id, @Valid @RequestBody Transaction transaction) {
-        Transaction existingTransaction = this.transactionRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Transaction not found"));
-        // uppdatera egenskaper
-        existingTransaction.setSeller(transaction.getSeller());
-        existingTransaction.setBuyer(transaction.getBuyer());
-        existingTransaction.setSellerPlant(transaction.getSellerPlant());
-        existingTransaction.setBuyerPlant(transaction.getBuyerPlant());
-        existingTransaction.setFormOfPayment(transaction.getFormOfPayment());
-        existingTransaction.setPrice(transaction.getPrice());
-        existingTransaction.setSellerShippingAddress(transaction.getSellerShippingAddress());
-        existingTransaction.setBuyerShippingAddress(transaction.getBuyerShippingAddress());
-        existingTransaction.setSellerAgreementToTrade(transaction.getSellerAgreementToTrade());
-        existingTransaction.setBuyerAgreementToTrade(transaction.getBuyerAgreementToTrade());
-        existingTransaction.setCreatedAt(transaction.getCreatedAt());
-        existingTransaction.setUpdatedAt(transaction.getUpdatedAt());
-
-
-        return ResponseEntity.ok(this.transactionRepository.save(existingTransaction));
+        Transaction existingTransaction = transactionService.updateTransaction(id, transaction);
+        return ResponseEntity.ok(existingTransaction);
     }
-
-
-
-    @GetMapping("/seller/{seller}")
-    public ResponseEntity<List<Transaction>> getTransactionsBySellerId(@PathVariable String seller) {
-        List<Transaction> transactions = transactionRepository.findBySeller(seller);
-        return ResponseEntity.ok(transactions);
-    }
-
-
-    @GetMapping("/buyer/{buyer}")
-    public ResponseEntity<List<Transaction>> getTransactionsByBuyerId(@PathVariable String buyer) {
-        List<Transaction> transactions = transactionRepository.findByBuyer(buyer);
-        return ResponseEntity.ok(transactions);
-    }
-
-
-
-
- */
-
-
 
 }
 

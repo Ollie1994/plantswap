@@ -10,14 +10,15 @@ import com.oliwer.plantswap.repositories.TransactionRepository;
 import com.oliwer.plantswap.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class TransactionService {
-
 
     private final TransactionRepository transactionRepository;
     private final PlantRepository plantRepository;
     private final UserRepository userRepository;
-
 
     public TransactionService(TransactionRepository transactionRepository, PlantRepository plantRepository, UserRepository userRepository) {
         this.transactionRepository = transactionRepository;
@@ -25,7 +26,6 @@ public class TransactionService {
         this.userRepository = userRepository;
 
     }
-
 
 //------------------------------- METHODS ------------------------------------------------------------------------------
 
@@ -61,10 +61,54 @@ public class TransactionService {
         return transactionRepository.save(transaction);
     }
 
+    public List<Transaction> getAllTransactions() {
+        return transactionRepository.findAll();
+    }
 
+    public List<Transaction> getAllTransactionsBySellerId(String seller) {
+        return transactionRepository.findBySeller(seller);
+    }
+
+    public List<Transaction> getAllTransactionsByBuyerId(String buyer) {
+        return transactionRepository.findByBuyer(buyer);
+    }
+
+    public Optional<Transaction> getTransactionById(String id) {
+        return transactionRepository.findById(id);
+    }
+
+    public Transaction updateTransaction(String id, Transaction transaction) {
+        Transaction existingTransaction = transactionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Transaction not found"));
+        if (transaction.getSeller() != null) {
+            getSellerAndValidate(existingTransaction.getSeller());
+        }
+        if (transaction.getBuyer() != null) {
+            getBuyerAndValidate(existingTransaction.getBuyer());
+        }
+        if (transaction.getSellerPlant() != null) {
+            getSellerPlantAndValidate(existingTransaction.getSellerPlant());
+        }
+        if (transaction.getBuyerPlant() != null) {
+            getBuyerPlantAndValidate(existingTransaction.getBuyerPlant());
+        }
+        // här måste vi ha våra setter annars blir alla fält som inte är med null
+        existingTransaction.setSeller(transaction.getSeller());
+        existingTransaction.setBuyer(transaction.getBuyer());
+        existingTransaction.setSellerPlant(transaction.getSellerPlant());
+        existingTransaction.setBuyerPlant(transaction.getBuyerPlant());
+        existingTransaction.setFormOfPayment(transaction.getFormOfPayment());
+        existingTransaction.setSellerShippingAddress(transaction.getSellerShippingAddress());
+        existingTransaction.setBuyerShippingAddress(transaction.getBuyerShippingAddress());
+        existingTransaction.setPrice(transaction.getPrice());
+        existingTransaction.setSellerAgreementToTrade(transaction.getSellerAgreementToTrade());
+        existingTransaction.setBuyerAgreementToTrade(transaction.getBuyerAgreementToTrade());
+        existingTransaction.setCreatedAt(transaction.getCreatedAt());
+        existingTransaction.setUpdatedAt(transaction.getUpdatedAt());
+        return transactionRepository.save(existingTransaction);
+    }
 
 //------------------------------- HELPERS ------------------------------------------------------------------------------
-
 
     private User getSellerAndValidate(User seller) {
         // första kolla om id är tomt eller null
@@ -105,7 +149,6 @@ public class TransactionService {
         return plantRepository.findById(buyerPlant.getId())
                 .orElseThrow(() -> new IllegalArgumentException("BuyerPlant not found!"));
     }
-
 
     private void validateUserCombination(User seller, User buyer) {
         if (seller != null && seller.getId().equals(buyer.getId()) ||
