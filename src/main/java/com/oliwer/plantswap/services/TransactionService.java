@@ -31,7 +31,7 @@ public class TransactionService {
 
     public Transaction createTransaction(Transaction transaction) {
         getTransactionAndCompare(transaction.getFormOfPayment(), transaction.getPrice(), transaction.getSellerAgreementToTrade(),
-                transaction.getBuyerAgreementToTrade(), transaction.getSellerPlant().getFormOfPayment(), transaction.getBuyerPlant().getFormOfPayment());
+                   transaction.getBuyerAgreementToTrade(), transaction.getSellerPlant().getFormOfPayment(), transaction.getBuyerPlant().getFormOfPayment());
         User seller = getSellerAndValidate(transaction.getSeller());
         User buyer = getBuyerAndValidate(transaction.getBuyer());
         transaction.setSeller(seller);
@@ -39,13 +39,16 @@ public class TransactionService {
         validateUserCombination(seller, buyer);
         Plant sellerPlant = getSellerPlantAndValidate(transaction.getSellerPlant());
         transaction.setSellerPlant(sellerPlant);
+
         getSellerPlantAndCompareToTransaction(transaction.getFormOfPayment(), transaction.getSellerPlant().getFormOfPayment(),
-                transaction.getPrice(), transaction.getSellerPlant().getPrice());
+                transaction.getPrice(), transaction.getSellerPlant().getPrice(), transaction.getSeller().getId(), transaction.getSellerPlant().getUser().getId());
+
         if (transaction.getBuyerPlant() != null) {
             Plant buyerPlant = getBuyerPlantAndValidate(transaction.getBuyerPlant());
             transaction.setBuyerPlant(buyerPlant);
             getBuyerPlantAndCompareToTransaction(transaction.getFormOfPayment(),
-                    transaction.getBuyerPlant().getFormOfPayment(), transaction.getPrice(), transaction.getBuyerPlant().getPrice());
+                    transaction.getBuyerPlant().getFormOfPayment(), transaction.getPrice(), transaction.getBuyerPlant().getPrice(),
+                    transaction.getBuyer().getId(), transaction.getBuyerPlant().getUser().getId());
             validatePlantCombination(sellerPlant, buyerPlant);
             if (transaction.getBuyerPlant().getPlantStatus() != null) {
                 transaction.getBuyerPlant().setPlantStatus(PlantStatus.SOLD);
@@ -128,7 +131,7 @@ public class TransactionService {
     }
 
     private void getSellerPlantAndCompareToTransaction(FormOfPayment transactionFormOfPayment, FormOfPayment sellerFormOfPayment,
-                                            Double transactionPrice, Double sellerPrice) {
+                                            Double transactionPrice, Double sellerPrice, String sellerId, String sellerPlantSellerId) {
 
         if (transactionFormOfPayment == transactionFormOfPayment.TRADE && sellerFormOfPayment == sellerFormOfPayment.CURRENCY ||
                 transactionFormOfPayment == transactionFormOfPayment.CURRENCY && sellerFormOfPayment == sellerFormOfPayment.TRADE) {
@@ -139,10 +142,15 @@ public class TransactionService {
             throw new IllegalArgumentException("TransactionPrice <" + transactionPrice + "> must be equal to SellerPrice <" + sellerPrice + ">");
         }
 
+        if (!sellerId.equals(sellerPlantSellerId)) {
+            throw new IllegalArgumentException("Seller id <" + sellerId + "> must match sellerPlantSeller id <" + sellerPlantSellerId + ">");
+
+        }
+
     }
 
     private void getBuyerPlantAndCompareToTransaction(FormOfPayment transactionFormOfPayment, FormOfPayment buyerFormOfPayment,
-                                           Double transactionPrice, Double buyerPrice) {
+                                           Double transactionPrice, Double buyerPrice,  String buyerId, String buyerPlantSellerId) {
         if (transactionFormOfPayment == transactionFormOfPayment.TRADE && buyerFormOfPayment == buyerFormOfPayment.CURRENCY ||
                 transactionFormOfPayment == transactionFormOfPayment.CURRENCY && buyerFormOfPayment == buyerFormOfPayment.TRADE) {
 
@@ -151,6 +159,10 @@ public class TransactionService {
         // ÄDNRA DETTTA SKA ej kunna ha ett buyer price och ett trans price
         if (!transactionPrice.equals(buyerPrice)) {
             throw new IllegalArgumentException("TransactionPrice <" + transactionPrice + "> must be equal to BuyerPrice <" + buyerPrice + ">");
+        }
+        if (!buyerId.equals(buyerPlantSellerId)) {
+            throw new IllegalArgumentException("Buyer id <" + buyerId + "> must match buyerPlantBuyer id <" + buyerPlantSellerId + ">");
+
         }
     }
 
