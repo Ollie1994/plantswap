@@ -39,9 +39,18 @@ public class TransactionService {
 
         validateUserCombination(seller, buyer);
         getTransactionAndCompare(transaction.getFormOfPayment(), transaction.getPrice());
-        getAndCompareFormsOfPaymentBetweenTransactionAndSellerPlant(transaction.getFormOfPayment(), transaction.getSellerPlant().getFormOfPayment(), transaction.getSellerAgreementToTrade());
         getSellerPlantAndCompareToTransaction(transaction.getFormOfPayment(), transaction.getSellerPlant().getFormOfPayment(),
                 transaction.getPrice(), transaction.getSellerPlant().getPrice(), transaction.getSeller().getId(), transaction.getSellerPlant().getUser().getId());
+
+        if (transaction.getFormOfPayment() == FormOfPayment.TRADE) {
+            if (transaction.getSellerAgreementToTrade() != null) {
+                getAndCompareFormsOfPaymentBetweenTransactionAndSellerPlant(transaction.getFormOfPayment(), transaction.getSellerPlant().getFormOfPayment(), transaction.getSellerAgreementToTrade());
+            } else {
+                throw new IllegalArgumentException("If the transaction is TRADE then sellerAgreementToTrade cant be null");
+            }
+        }
+
+
 
         if (transaction.getBuyerPlant() != null) {
             Plant buyerPlant = getBuyerPlantAndValidate(transaction.getBuyerPlant());
@@ -49,7 +58,14 @@ public class TransactionService {
             getBuyerPlantAndCompareToTransaction(transaction.getFormOfPayment(),
                     transaction.getBuyerPlant().getFormOfPayment(), transaction.getPrice(), transaction.getBuyerPlant().getPrice(),
                     transaction.getBuyer().getId(), transaction.getBuyerPlant().getUser().getId());
-            getAndCompareFormsOfPaymentBetweenTransactionAndBuyerPlant(transaction.getFormOfPayment(), transaction.getBuyerPlant().getFormOfPayment(), transaction.getBuyerAgreementToTrade());
+            if (transaction.getFormOfPayment() == FormOfPayment.TRADE) {
+                if (transaction.getBuyerAgreementToTrade() != null) {
+                    getAndCompareFormsOfPaymentBetweenTransactionAndBuyerPlant(transaction.getFormOfPayment(), transaction.getBuyerPlant().getFormOfPayment(), transaction.getBuyerAgreementToTrade());
+                } else {
+                    throw new IllegalArgumentException("If the transaction is TRADE then buyerAgreementToTrade cant be null");
+                }
+
+            }
             validatePlantCombination(sellerPlant, buyerPlant);
             if (transaction.getBuyerPlant().getPlantStatus() != null) {
                 transaction.getBuyerPlant().setPlantStatus(PlantStatus.SOLD);
