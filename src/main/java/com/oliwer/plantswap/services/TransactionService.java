@@ -30,16 +30,16 @@ public class TransactionService {
 //------------------------------- METHODS ------------------------------------------------------------------------------
 
     public Transaction createTransaction(Transaction transaction) {
-        getTransactionAndCompare(transaction.getFormOfPayment(), transaction.getPrice(), transaction.getSellerAgreementToTrade(),
-                   transaction.getBuyerAgreementToTrade(), transaction.getSellerPlant().getFormOfPayment(), transaction.getBuyerPlant().getFormOfPayment());
         User seller = getSellerAndValidate(transaction.getSeller());
         User buyer = getBuyerAndValidate(transaction.getBuyer());
         transaction.setSeller(seller);
         transaction.setBuyer(buyer);
-        validateUserCombination(seller, buyer);
         Plant sellerPlant = getSellerPlantAndValidate(transaction.getSellerPlant());
         transaction.setSellerPlant(sellerPlant);
 
+        validateUserCombination(seller, buyer);
+        getTransactionAndCompare(transaction.getFormOfPayment(), transaction.getPrice());
+        getAndCompareFormsOfPaymentBetweenTransactionAndSellerPlant(transaction.getFormOfPayment(), transaction.getSellerPlant().getFormOfPayment(), transaction.getSellerAgreementToTrade());
         getSellerPlantAndCompareToTransaction(transaction.getFormOfPayment(), transaction.getSellerPlant().getFormOfPayment(),
                 transaction.getPrice(), transaction.getSellerPlant().getPrice(), transaction.getSeller().getId(), transaction.getSellerPlant().getUser().getId());
 
@@ -49,6 +49,7 @@ public class TransactionService {
             getBuyerPlantAndCompareToTransaction(transaction.getFormOfPayment(),
                     transaction.getBuyerPlant().getFormOfPayment(), transaction.getPrice(), transaction.getBuyerPlant().getPrice(),
                     transaction.getBuyer().getId(), transaction.getBuyerPlant().getUser().getId());
+            getAndCompareFormsOfPaymentBetweenTransactionAndBuyerPlant(transaction.getFormOfPayment(), transaction.getBuyerPlant().getFormOfPayment(), transaction.getBuyerAgreementToTrade());
             validatePlantCombination(sellerPlant, buyerPlant);
             if (transaction.getBuyerPlant().getPlantStatus() != null) {
                 transaction.getBuyerPlant().setPlantStatus(PlantStatus.SOLD);
@@ -60,19 +61,6 @@ public class TransactionService {
         return transactionRepository.save(transaction);
     }
 
-    /*
-    public Book createBook(Book book) {
-
-        Author mainAuthor = getAuthorAndValidate(book.getAuthor(), "Main Author");
-
-        book.setAuthor(mainAuthor);
-
-        if (book.getCoAuthor() != null) {
-            Author coAuthor = getAuthorAndValidate(book.getCoAuthor(), "Co Author");
-            book.setCoAuthor(coAuthor);
-            validateAuthorCombination(mainAuthor, coAuthor);
-        }
-     */
 
 
 //------------------------------- HELPERS ------------------------------------------------------------------------------
@@ -119,10 +107,6 @@ public class TransactionService {
     }
 
 
-
-
-
-
     private void validateUserCombination(User seller, User buyer) {
         if (seller != null && seller.getId().equals(buyer.getId()) ||
                 buyer != null && seller.getId().equals(buyer.getId())) {
@@ -131,12 +115,12 @@ public class TransactionService {
     }
 
     private void getSellerPlantAndCompareToTransaction(FormOfPayment transactionFormOfPayment, FormOfPayment sellerFormOfPayment,
-                                            Double transactionPrice, Double sellerPrice, String sellerId, String sellerPlantSellerId) {
+                                                       Double transactionPrice, Double sellerPrice, String sellerId, String sellerPlantSellerId) {
 
         if (transactionFormOfPayment == transactionFormOfPayment.TRADE && sellerFormOfPayment == sellerFormOfPayment.CURRENCY ||
                 transactionFormOfPayment == transactionFormOfPayment.CURRENCY && sellerFormOfPayment == sellerFormOfPayment.TRADE) {
 
-            throw new IllegalArgumentException("FormOfPayment for transaction <" + transactionFormOfPayment + "> and seller <" + sellerFormOfPayment + "> must be the same");
+            throw new IllegalArgumentException("FormOfPayment for transaction <" + transactionFormOfPayment + "> and sellerPlant <" + sellerFormOfPayment + "> must be the same");
         }
         if (!transactionPrice.equals(sellerPrice)) {
             throw new IllegalArgumentException("TransactionPrice <" + transactionPrice + "> must be equal to SellerPrice <" + sellerPrice + ">");
@@ -150,11 +134,11 @@ public class TransactionService {
     }
 
     private void getBuyerPlantAndCompareToTransaction(FormOfPayment transactionFormOfPayment, FormOfPayment buyerFormOfPayment,
-                                           Double transactionPrice, Double buyerPrice,  String buyerId, String buyerPlantSellerId) {
+                                                      Double transactionPrice, Double buyerPrice, String buyerId, String buyerPlantSellerId) {
         if (transactionFormOfPayment == transactionFormOfPayment.TRADE && buyerFormOfPayment == buyerFormOfPayment.CURRENCY ||
                 transactionFormOfPayment == transactionFormOfPayment.CURRENCY && buyerFormOfPayment == buyerFormOfPayment.TRADE) {
 
-            throw new IllegalArgumentException("FormOfPayment for transaction <" + transactionFormOfPayment + "> and buyer <" + buyerFormOfPayment + "> must be the same");
+            throw new IllegalArgumentException("FormOfPayment for transaction <" + transactionFormOfPayment + "> and buyerPlant <" + buyerFormOfPayment + "> must be the same");
         }
         // ÄDNRA DETTTA SKA ej kunna ha ett buyer price och ett trans price
         if (!transactionPrice.equals(buyerPrice)) {
@@ -173,9 +157,7 @@ public class TransactionService {
         }
     }
 
-    private void getTransactionAndCompare(FormOfPayment transactionFormOfPayment, Double price, Boolean sellerAgreementToTrade,
-                                          Boolean buyerAgreementToTrade, FormOfPayment sellerFormOfPayment,
-                                          FormOfPayment buyerFormOfPayment) {
+    private void getTransactionAndCompare(FormOfPayment transactionFormOfPayment, Double price) {
         if (transactionFormOfPayment == null && price == null ||
                 transactionFormOfPayment == null && price < 50 ||
                 transactionFormOfPayment == null && price > 1000 ||
@@ -184,13 +166,42 @@ public class TransactionService {
                 transactionFormOfPayment == transactionFormOfPayment.TRADE && price < 0 ||
                 transactionFormOfPayment == transactionFormOfPayment.CURRENCY && price < 50 ||
                 transactionFormOfPayment == transactionFormOfPayment.CURRENCY && price > 1000) {
-            throw new IllegalArgumentException("FormOfPayment cannot be <" + transactionFormOfPayment + "> while also having a price of <" + price + "> (have to be range between 50 and 1000)");
+            throw new IllegalArgumentException("FormOfPayment cannot be <" + transactionFormOfPayment + "> while also having a price of <" + price + "> (if (CURRENCY) then the price have to be between 50 and 1000)");
         }
-        if (transactionFormOfPayment == transactionFormOfPayment.TRADE && sellerFormOfPayment == sellerFormOfPayment.TRADE &&
-                buyerFormOfPayment == buyerFormOfPayment.TRADE) {
-            if (sellerAgreementToTrade == null || buyerAgreementToTrade == null
-                    || sellerAgreementToTrade == false || buyerAgreementToTrade == false) {
-                throw new IllegalArgumentException("Both Seller and Buyer must have agreed to the trade");
+
+    }
+
+    private void getAndCompareFormsOfPaymentBetweenTransactionAndSellerPlant(FormOfPayment transactionFormOfPayment,
+                                                                             FormOfPayment sellerFormOfPayment,
+                                                                             Boolean sellerAgreementToTrade) {
+        if (transactionFormOfPayment == transactionFormOfPayment.TRADE && sellerFormOfPayment == sellerFormOfPayment.TRADE) {
+            if (sellerAgreementToTrade == null || sellerAgreementToTrade == false) {
+                throw new IllegalArgumentException("Seller must have agreed to the trade");
+            }
+
+        }
+
+        if (transactionFormOfPayment == transactionFormOfPayment.CURRENCY && sellerFormOfPayment == sellerFormOfPayment.CURRENCY) {
+            if (sellerAgreementToTrade != null || sellerAgreementToTrade == true) {
+                throw new IllegalArgumentException("Seller cant agree to a trade when transaction is <" + transactionFormOfPayment + ">");
+            }
+
+        }
+    }
+
+    private void getAndCompareFormsOfPaymentBetweenTransactionAndBuyerPlant(FormOfPayment transactionFormOfPayment,
+                                                                            FormOfPayment buyerFormOfPayment,
+                                                                            Boolean buyerAgreementToTrade) {
+        if (transactionFormOfPayment == transactionFormOfPayment.TRADE && buyerFormOfPayment == buyerFormOfPayment.TRADE) {
+            if (buyerAgreementToTrade == null || buyerAgreementToTrade == false) {
+                throw new IllegalArgumentException("Buyer must have agreed to the trade");
+            }
+
+        }
+
+        if (transactionFormOfPayment == transactionFormOfPayment.CURRENCY && buyerFormOfPayment == buyerFormOfPayment.CURRENCY) {
+            if (buyerAgreementToTrade != null || buyerAgreementToTrade == true) {
+                throw new IllegalArgumentException("Buyer cant agree to a trade when transaction is <" + transactionFormOfPayment + ">");
             }
 
         }

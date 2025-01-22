@@ -113,7 +113,7 @@ public class PlantService {
                 formOfPayment == formOfPayment.TRADE && price < 0 ||
                 formOfPayment == formOfPayment.CURRENCY && price < 50 ||
                 formOfPayment == formOfPayment.CURRENCY && price > 1000) {
-            throw new IllegalArgumentException("FormOfPayment cannot be <" + formOfPayment + "> while also having a price of <" + price + "> (have to be range between 50 and 1000)");
+            throw new IllegalArgumentException("FormOfPayment cannot be <" + formOfPayment + "> while also having a price of <" + price + "> (if (currency) have to be range between 50 and 1000)");
         }
     }
 
