@@ -42,6 +42,8 @@ public class TransactionService {
         getSellerPlantAndCompareToTransaction(transaction.getFormOfPayment(), transaction.getSellerPlant().getFormOfPayment(),
                 transaction.getPrice(), transaction.getSellerPlant().getPrice(), transaction.getSeller().getId(), transaction.getSellerPlant().getUser().getId());
 
+
+        // för att vi kan inte använda getSellerAgreeToTrade if null
         if (transaction.getFormOfPayment() == FormOfPayment.TRADE) {
             if (transaction.getSellerAgreementToTrade() != null) {
                 getAndCompareFormsOfPaymentBetweenTransactionAndSellerPlant(transaction.getFormOfPayment(), transaction.getSellerPlant().getFormOfPayment(), transaction.getSellerAgreementToTrade());
@@ -51,7 +53,7 @@ public class TransactionService {
         }
 
 
-
+        // för att vi kan itne använda buyer, buyerplant etc när den är null. så måsta kolla ifall null först
         if (transaction.getBuyerPlant() != null) {
             Plant buyerPlant = getBuyerPlantAndValidate(transaction.getBuyerPlant());
             transaction.setBuyerPlant(buyerPlant);
@@ -126,6 +128,7 @@ public class TransactionService {
 
 //------------------------------- HELPERS ------------------------------------------------------------------------------
 
+    //validerar en seller som sedan "setSeller" sparar i createTrans (så att jag kan använda Seller och tillhörande fält i andra metoder)
     private User getSellerAndValidate(User seller) {
         // första kolla om id är tomt eller null
         if (seller == null || seller.getId() == null) {
@@ -136,6 +139,7 @@ public class TransactionService {
                 .orElseThrow(() -> new IllegalArgumentException("Seller not found!"));
     }
 
+    //Samma som alla andra validate (kolla ovan på kommentaren)
     private User getBuyerAndValidate(User buyer) {
         // första kolla om id är tomt eller null
         if (buyer == null || buyer.getId() == null) {
@@ -146,6 +150,7 @@ public class TransactionService {
                 .orElseThrow(() -> new IllegalArgumentException("Buyer not found!"));
     }
 
+    //Samma som alla andra validate (kolla ovan på kommentaren)
     private Plant getSellerPlantAndValidate(Plant sellerPlant) {
         // första kolla om id är tomt eller null
         if (sellerPlant == null || sellerPlant.getId() == null) {
@@ -156,6 +161,7 @@ public class TransactionService {
                 .orElseThrow(() -> new IllegalArgumentException("SellerPlant not found!"));
     }
 
+    //Samma som alla andra validate (kolla ovan på kommentaren)
     private Plant getBuyerPlantAndValidate(Plant buyerPlant) {
         // första kolla om id är tomt eller null
         if (buyerPlant == null || buyerPlant.getId() == null) {
@@ -166,6 +172,7 @@ public class TransactionService {
                 .orElseThrow(() -> new IllegalArgumentException("BuyerPlant not found!"));
     }
 
+    // seller and user can be same
     private void validateUserCombination(User seller, User buyer) {
         if (seller != null && seller.getId().equals(buyer.getId()) ||
                 buyer != null && seller.getId().equals(buyer.getId())) {
@@ -173,6 +180,7 @@ public class TransactionService {
         }
     }
 
+    // kolalr att sellerPlant och trans har samma formOfPayment
     private void getSellerPlantAndCompareToTransaction(FormOfPayment transactionFormOfPayment, FormOfPayment sellerFormOfPayment,
                                                        Double transactionPrice, Double sellerPrice, String sellerId, String sellerPlantSellerId) {
 
@@ -192,6 +200,7 @@ public class TransactionService {
 
     }
 
+    // kolalr att buyerPlant och trans har samma formOfPayment
     private void getBuyerPlantAndCompareToTransaction(FormOfPayment transactionFormOfPayment, FormOfPayment buyerFormOfPayment,
                                                       Double transactionPrice, Double buyerPrice, String buyerId, String buyerPlantSellerId) {
         if (transactionFormOfPayment == transactionFormOfPayment.TRADE && buyerFormOfPayment == buyerFormOfPayment.CURRENCY ||
@@ -209,6 +218,7 @@ public class TransactionService {
         }
     }
 
+    // sellerPlant and buyerPlant cant be same
     private void validatePlantCombination(Plant sellerPlant, Plant buyerPlant) {
         if (sellerPlant != null && sellerPlant.getId().equals(buyerPlant.getId()) ||
                 buyerPlant != null && sellerPlant.getId().equals(buyerPlant.getId())) {
@@ -216,6 +226,7 @@ public class TransactionService {
         }
     }
 
+    // kolllar kombon mellan TRAde till 0 och CUrrency till 50 - 1000 i trans
     private void getTransactionAndCompare(FormOfPayment transactionFormOfPayment, Double price) {
         if (transactionFormOfPayment == null && price == null ||
                 transactionFormOfPayment == null && price < 50 ||
@@ -230,6 +241,7 @@ public class TransactionService {
 
     }
 
+    // kollar att seller har "agreedtotrade" ifall trade finns i trans och i sellerplant
     private void getAndCompareFormsOfPaymentBetweenTransactionAndSellerPlant(FormOfPayment transactionFormOfPayment,
                                                                              FormOfPayment sellerFormOfPayment,
                                                                              Boolean sellerAgreementToTrade) {
@@ -248,6 +260,7 @@ public class TransactionService {
         }
     }
 
+    // kollar att buyer har "agreedtotrade" ifall trade finns i trans och i buyerPlant
     private void getAndCompareFormsOfPaymentBetweenTransactionAndBuyerPlant(FormOfPayment transactionFormOfPayment,
                                                                             FormOfPayment buyerFormOfPayment,
                                                                             Boolean buyerAgreementToTrade) {

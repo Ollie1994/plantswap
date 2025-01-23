@@ -84,6 +84,7 @@ public class PlantService {
 
 //------------------------------- HELPERS ------------------------------------------------------------------------------
 
+    //validerar en user som sedan "setUser" sparar i createPlant (så att jag kan använda User och tillhörande fält i andra metoder)
     private User getUserAndValidate(User user) {
         if(user == null || user.getId() == null) {
             throw new IllegalArgumentException("ID cannot be null");
@@ -92,7 +93,7 @@ public class PlantService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found!"));
     }
 
-
+    //kollar hur många plantor en user har och begänsar de till 10
     public void checkToSeeHowManyPlantsAUserHas(String user) {
         List<Plant> plants = plantRepository.findByUser(user);
         Long count = plants.stream().count();
@@ -102,6 +103,7 @@ public class PlantService {
         System.out.println("User now has " + (count + 1) + " plants");
     }
 
+    // kollar så att price och ENum TRADE inte kan vara samma. och kolla att ifall Currency så måste price vara mellan 50 och 1000
     private void getPlantAndCompare(FormOfPayment formOfPayment, Double price) {
         // första kolla om id är tomt eller null
         if (formOfPayment == null && price == null ||
